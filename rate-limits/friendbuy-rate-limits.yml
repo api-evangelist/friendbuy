@@ -1,0 +1,65 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Friendbuy
+providerId: friendbuy
+created: '2026-07-10'
+modified: '2026-07-10'
+reconciled: false
+tags:
+- Referral Marketing
+- Loyalty
+- Rewards
+- Rate Limiting
+- Quotas
+description: >-
+  Friendbuy does not publish fixed numeric rate limits for the Merchant API in
+  its public developer documentation. The API is a server-to-server integration
+  used for customer sync, event tracking, referral-link generation, analytics
+  reads, and loyalty ledger operations; practical throughput is governed by the
+  account's plan and by Friendbuy's operational limits rather than by a
+  documented per-minute request cap. The authorization token obtained at
+  POST /authorization is short-lived (the response carries an `expires`
+  timestamp), so clients should cache the token until near expiry and re-auth
+  rather than calling /authorization on every request.
+notes: >-
+  Numeric per-account or per-endpoint limits are not documented as of the review
+  date. Batch endpoints (postPersonalReferralLinkBatch) exist specifically to
+  reduce request volume when generating many referral links. Analytics endpoints
+  are paginated via pageToken. Confirm any hard limits with Friendbuy support.
+sources:
+- https://developers.friendbuy.com
+- https://friendbuy.com
+responseCodes:
+  throttled: 429
+limits:
+- name: Merchant API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Merchant API.
+- name: Authorization Token Lifetime
+  scope: account
+  metric: token
+  limit: short-lived (see expires timestamp)
+  notes: Cache the Bearer JWT until near its expires time; re-authorize rather than per-call.
+- name: Referral Link Generation
+  scope: account
+  metric: requests
+  limit: use batch endpoint for volume
+  notes: postPersonalReferralLinkBatch generates many links per request to reduce call count.
+- name: Analytics Pagination
+  scope: account
+  metric: rows
+  limit: paginated via pageToken
+  notes: Analytics endpoints return pages; follow nextPageToken to read full date ranges.
+policies:
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Token Caching
+  description: Reuse the Bearer token across requests until near expiry to avoid unnecessary /authorization calls.
+- name: Batching
+  description: Prefer batch endpoints and paginated reads to keep request volume low.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

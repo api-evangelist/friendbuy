@@ -1,0 +1,108 @@
+aid: friendbuy
+name: Friendbuy
+review:
+  question: Does Friendbuy expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-10'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Friendbuy's public developer surface is
+    the Merchant API - a request/response REST API over HTTPS (base
+    https://mapi.fbot.me/v1). There is no server-push transport (WebSocket or
+    SSE) on Friendbuy's own API to model. Friendbuy's real-time-feeling
+    behavior on the merchant side is the front-end widget JavaScript SDK
+    (friendbuy.js) firing tracking events into Friendbuy, plus outbound
+    server-to-server tracking calls the merchant makes (postPurchaseEvent,
+    postSignUpEvent, postCustomEvent). None of these is a bidirectional
+    WebSocket channel that Friendbuy documents for consumers to connect to.
+findings:
+  summary: |
+    Friendbuy does not publish a documented public WebSocket API. Friendbuy is a
+    referral and loyalty marketing platform. Its documented server-to-server
+    surface is the Merchant API at https://mapi.fbot.me/v1, authenticated with a
+    Bearer JWT obtained by exchanging an account key and secret at
+    POST /authorization. Every documented endpoint is request/response REST over
+    HTTPS. Friendbuy also ships a browser JavaScript widget/SDK (friendbuy.js)
+    that fires client-side tracking events, and it can send outbound webhooks/
+    tracking to configured destinations, but neither is a WebSocket. No
+    realtime, bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented on Friendbuy's own API.
+  accessModel: |
+    The Merchant API and production credentials are gated. Friendbuy uses
+    quote-based, contact-sales pricing (reported tiers around Starter ~$249/mo,
+    Deluxe ~$749/mo, and custom Enterprise, tied to monthly company sales
+    volume); there is no self-serve public sign-up that grants API keys. The
+    key and secret used at POST /authorization are issued from the Friendbuy
+    Developer Center to paying accounts. The documentation at
+    developers.friendbuy.com is public and readable without an account.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://mapi.fbot.me/v1
+      documented: true
+      note: The Merchant API - customers, referrals, events, analytics, loyalty/ledger. Bearer JWT auth.
+    - protocol: JavaScript Widget SDK
+      scheme: https
+      documented: true
+      note: Browser friendbuy.js widget fires client-side tracking events (page views, purchases, sign-ups). Not a WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Friendbuy Merchant API as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://mapi.fbot.me/v1/authorization
+    - POST   https://mapi.fbot.me/v1/postCustomer
+    - GET    https://mapi.fbot.me/v1/getCustomer
+    - GET    https://mapi.fbot.me/v1/getMemberTierCustomer
+    - GET    https://mapi.fbot.me/v1/getUserData
+    - DELETE https://mapi.fbot.me/v1/deleteUserData
+    - POST   https://mapi.fbot.me/v1/postPersonalReferralLink
+    - POST   https://mapi.fbot.me/v1/postPersonalReferralLinkBatch
+    - GET    https://mapi.fbot.me/v1/getReferralStatus
+    - POST   https://mapi.fbot.me/v1/postPurchaseEvent
+    - POST   https://mapi.fbot.me/v1/postSignUpEvent
+    - POST   https://mapi.fbot.me/v1/postCustomEvent
+    - GET    https://mapi.fbot.me/v1/analytics/widget-views
+    - GET    https://mapi.fbot.me/v1/analytics/shares
+    - GET    https://mapi.fbot.me/v1/analytics/clicks
+    - GET    https://mapi.fbot.me/v1/analytics/account-sign-ups
+    - GET    https://mapi.fbot.me/v1/analytics/purchases
+    - GET    https://mapi.fbot.me/v1/analytics/distributed-advocate-rewards
+    - GET    https://mapi.fbot.me/v1/analytics/distributed-friend-incentives
+    - GET    https://mapi.fbot.me/v1/analytics/rewards/referral
+    - GET    https://mapi.fbot.me/v1/analytics/email-captures
+    - GET    https://mapi.fbot.me/v1/analytics/email-metrics
+    - GET    https://mapi.fbot.me/v1/analytics/loyalty/ledger-heads
+    - GET    https://mapi.fbot.me/v1/ledger-balance
+    - GET    https://mapi.fbot.me/v1/ledger-balance-custom
+    - POST   https://mapi.fbot.me/v1/postLedgerAdjustment
+    - POST   https://mapi.fbot.me/v1/postLedgerAdjustmentCustom
+    - GET    https://mapi.fbot.me/v1/reward/redemption-options
+    - POST   https://mapi.fbot.me/v1/reward/redeem
+    - GET    https://mapi.fbot.me/v1/reward/coupons
+    - POST   https://mapi.fbot.me/v1/postBlockUsers
+  modeledNote: |
+    Endpoint paths and HTTP methods above are confirmed from the public
+    developer documentation at developers.friendbuy.com. The request/response
+    JSON body schemas in openapi/friendbuy-openapi.yml are honestly modeled
+    from documented behavior and common Friendbuy payload fields; field-level
+    shapes should be reconciled against the live reference before production use.
+sources:
+  - url: https://developers.friendbuy.com
+    type: Documentation
+    note: Merchant API base URL (https://mapi.fbot.me/v1), key/secret to Bearer auth flow, and all documented endpoints. All REST. No WebSocket mentioned.
+  - url: https://friendbuy.com
+    type: Website
+    note: Referral and loyalty marketing platform for ecommerce/DTC brands.
+  - url: https://www.g2.com/products/friendbuy/pricing
+    type: Pricing
+    note: Third-party pricing overview - quote-based, contact-sales tiers keyed to monthly company sales.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Friendbuy's own public API is
+    request/response REST (the Merchant API) plus a browser JavaScript widget
+    SDK for client-side event tracking. No AsyncAPI document was created because
+    there is no server-push transport on Friendbuy's own API to model.

@@ -1,0 +1,250 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Authorization", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Obtain a Bearer token.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/authorization",
+            "body": { "type": "json", "data": "{ \"key\": \"YOUR_KEY\", \"secret\": \"YOUR_SECRET\" }" }
+          },
+          "docs": "Exchange account key and secret for a short-lived Bearer JWT."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create or update a customer.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postCustomer",
+            "body": { "type": "json", "data": "{ \"id\": \"cust_123\", \"email\": \"buyer@example.com\" }" }
+          },
+          "docs": "Creates or updates a Friendbuy customer record."
+        },
+        {
+          "info": { "name": "Retrieve a customer.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getCustomer",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Retrieves a customer by id or email."
+        },
+        {
+          "info": { "name": "Retrieve member tier.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getMemberTierCustomer",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Returns the loyalty member tier a customer belongs to."
+        },
+        {
+          "info": { "name": "Get user data (GDPR/CCPA).", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getUserData",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Returns stored personal data for a data-access request."
+        },
+        {
+          "info": { "name": "Delete user data (GDPR/CCPA).", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://mapi.fbot.me/v1/deleteUserData",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Deletes stored personal data for an erasure request."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Referrals", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Generate a personal referral link.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPersonalReferralLink",
+            "body": { "type": "json", "data": "{ \"customerId\": \"cust_123\", \"campaignId\": \"camp_1\" }" }
+          },
+          "docs": "Generates a unique personal referral link and code for an advocate."
+        },
+        {
+          "info": { "name": "Generate personal referral links (batch).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPersonalReferralLinkBatch",
+            "body": { "type": "json", "data": "{ \"requests\": [ { \"customerId\": \"cust_123\", \"campaignId\": \"camp_1\" } ] }" }
+          },
+          "docs": "Generates referral links for many advocates at once."
+        },
+        {
+          "info": { "name": "Get referral status.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getReferralStatus",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Returns referral status for a customer or referral code."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Events", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Track a purchase event.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPurchaseEvent",
+            "body": { "type": "json", "data": "{ \"id\": \"order_789\", \"amount\": 84.50, \"currency\": \"USD\" }" }
+          },
+          "docs": "Records a purchase/order conversion for referral attribution."
+        },
+        {
+          "info": { "name": "Track a sign-up event.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postSignUpEvent",
+            "body": { "type": "json", "data": "{ \"email\": \"buyer@example.com\" }" }
+          },
+          "docs": "Records an account sign-up conversion."
+        },
+        {
+          "info": { "name": "Track a custom event.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postCustomEvent",
+            "body": { "type": "json", "data": "{ \"eventName\": \"trial_started\" }" }
+          },
+          "docs": "Records an arbitrary named custom event."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Analytics", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Purchases.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/purchases",
+            "params": [
+              { "name": "fromDate", "value": "2026-07-01", "type": "query", "description": "Start of the date range." },
+              { "name": "toDate", "value": "2026-07-10", "type": "query", "description": "End of the date range." }
+            ]
+          },
+          "docs": "Returns purchase conversions over a date range."
+        },
+        {
+          "info": { "name": "Clicks.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/clicks",
+            "params": [
+              { "name": "fromDate", "value": "2026-07-01", "type": "query", "description": "Start of the date range." },
+              { "name": "toDate", "value": "2026-07-10", "type": "query", "description": "End of the date range." }
+            ]
+          },
+          "docs": "Returns referral-link click events over a date range."
+        },
+        {
+          "info": { "name": "Combined referral rewards.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/rewards/referral",
+            "params": [
+              { "name": "fromDate", "value": "2026-07-01", "type": "query", "description": "Start of the date range." },
+              { "name": "toDate", "value": "2026-07-10", "type": "query", "description": "End of the date range." }
+            ]
+          },
+          "docs": "Returns combined advocate and friend referral rewards over a date range."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Rewards & Loyalty", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get a customer's loyalty balance.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/ledger-balance",
+            "params": [
+              { "name": "customerId", "value": "cust_123", "type": "query", "description": "Your identifier for the customer." }
+            ]
+          },
+          "docs": "Returns the loyalty ledger balance for one customer."
+        },
+        {
+          "info": { "name": "Adjust a customer's loyalty ledger.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postLedgerAdjustment",
+            "body": { "type": "json", "data": "{ \"customerId\": \"cust_123\", \"amount\": 100 }" }
+          },
+          "docs": "Credits or debits a customer's loyalty balance."
+        },
+        {
+          "info": { "name": "List redemption options.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/reward/redemption-options"
+          },
+          "docs": "Returns available reward redemption options."
+        },
+        {
+          "info": { "name": "Redeem a reward.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/reward/redeem",
+            "body": { "type": "json", "data": "{ \"customerId\": \"cust_123\", \"redemptionOptionId\": \"opt_1\" }" }
+          },
+          "docs": "Exchanges loyalty points/credit for a reward."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Management", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Block users.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postBlockUsers",
+            "body": { "type": "json", "data": "{ \"users\": [ { \"email\": \"fraud@example.com\" } ] }" }
+          },
+          "docs": "Blocks users from referral or loyalty campaigns."
+        }
+      ]
+    }
+  ]
+}

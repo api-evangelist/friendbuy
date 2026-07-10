@@ -1,0 +1,103 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Friendbuy
+providerId: friendbuy
+created: '2026-07-10'
+modified: '2026-07-10'
+reconciled: false
+tags:
+- Referral Marketing
+- Loyalty
+- Rewards
+- Ecommerce
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Friendbuy spend. Friendbuy is billed as a SaaS subscription
+  (quote-based, contact-sales) tiered on the merchant's total monthly company
+  sales volume rather than on API usage - the Merchant API is an included
+  capability, not a metered line item. The two dominant cost drivers are the
+  platform subscription fee (reported roughly $249/mo Starter, $749/mo Deluxe,
+  custom Enterprise) and, separately, the variable reward payouts the program
+  distributes to customers (advocate rewards, friend incentives, and loyalty
+  redemptions). Add-ons such as tiered loyalty are reported to add fixed monthly
+  cost. Because reward payouts scale with referral and loyalty performance, they
+  behave like a usage/variable cost even though the platform fee is flat.
+notes: >-
+  Per-unit API pricing does not apply; there is no metered API charge. Treat the
+  subscription as a fixed committed cost and the distributed rewards/incentives
+  as the variable, performance-driven spend to monitor. Figures are indicative
+  from third-party sources and not reconciled against a Friendbuy quote.
+sources:
+- https://friendbuy.com
+- https://developers.friendbuy.com
+- https://www.g2.com/products/friendbuy/pricing
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Friendbuy
+serviceCategory: Marketing and Advertising
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Friendbuy
+  ServiceCategory: Marketing and Advertising
+  ProviderName: Friendbuy
+  PublisherName: Friendbuy
+  InvoiceIssuerName: Friendbuy
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription
+meters:
+- name: platform_subscription
+  description: Fixed monthly platform subscription fee, tiered on total monthly company sales.
+  unit: months
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: distributed_advocate_rewards
+  description: Rewards paid out to advocates for successful referrals; variable, performance-driven.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+  - campaign
+- name: distributed_friend_incentives
+  description: Incentives paid out to referred friends; variable, performance-driven.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+  - campaign
+- name: loyalty_redemptions
+  description: Value of loyalty points/credit redeemed by customers for rewards and coupons.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+  - campaign
+principles:
+- name: Visibility
+  description: Track distributed advocate rewards, friend incentives, and loyalty redemptions per campaign via the Analytics API alongside the flat subscription fee.
+- name: Allocation
+  description: Map campaigns to product lines or teams so reward payouts attribute to the revenue they drive.
+- name: Optimization
+  description: Tune reward amounts and eligibility rules against referral ROI; use blocking (postBlockUsers) to curb reward fraud; right-size the plan tier to actual monthly company sales.
+- name: Accountability
+  description: Assign campaign owners and review monthly reward spend against referral-driven revenue and the committed subscription.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

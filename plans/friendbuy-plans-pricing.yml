@@ -1,0 +1,109 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Friendbuy
+providerId: friendbuy
+created: '2026-07-10'
+modified: '2026-07-10'
+reconciled: false
+tags:
+- Referral Marketing
+- Loyalty
+- Rewards
+- Ecommerce
+- Plans
+description: >-
+  Friendbuy uses quote-based, contact-sales pricing with no public self-serve
+  pricing page or sign-up. Plans are tiered on the merchant's total monthly
+  company sales volume rather than on API call volume, and the Merchant API plus
+  production API credentials are included with a paid subscription rather than
+  sold separately. Third-party sources report a Starter tier around $249/month
+  (up to ~$50k/mo in company sales), a Deluxe tier around $749/month (up to
+  ~$100k/mo), and a custom Enterprise tier above that. Reward payouts to
+  customers (advocate rewards, friend incentives, loyalty redemptions) are
+  separate from the platform subscription fee, and add-ons such as tiered
+  loyalty are reported to carry additional monthly cost. Contracts typically run
+  annually. All figures here are indicative from third-party reviews and are not
+  reconciled against a Friendbuy quote.
+notes: >-
+  There is no metered per-API-call price. The API is an included capability of a
+  paid plan; access requires contacting Friendbuy sales and being issued a
+  key/secret in the Developer Center. Verify current tiers, thresholds, and
+  add-on costs directly with Friendbuy during reconciliation.
+sources:
+- https://friendbuy.com
+- https://developers.friendbuy.com
+- https://www.g2.com/products/friendbuy/pricing
+- https://www.getapp.com/marketing-software/a/friendbuy/pricing/
+plans:
+- id: friendbuy-starter
+  name: Starter
+  type: paid
+  description: >-
+    Entry tier reported around $249/month for merchants with up to roughly
+    $50,000 in total monthly company sales. Includes the referral platform,
+    on-site widgets, and Merchant API access with issued credentials.
+  entries:
+  - label: Company Sales Ceiling
+    name: starter_sales_ceiling
+    type: flat
+    metric: sales
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$249/month (up to ~$50k monthly company sales; contact sales)
+    userMultiplied: false
+  elements:
+  - name: Referral Campaigns
+  - name: On-Site Widgets
+  - name: Merchant API Access
+- id: friendbuy-deluxe
+  name: Deluxe
+  type: paid
+  description: >-
+    Mid tier reported around $749/month for merchants with up to roughly
+    $100,000 in total monthly company sales. Adds higher volume and additional
+    campaign capabilities on top of Starter.
+  entries:
+  - label: Company Sales Ceiling
+    name: deluxe_sales_ceiling
+    type: flat
+    metric: sales
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$749/month (up to ~$100k monthly company sales; contact sales)
+    userMultiplied: false
+  elements:
+  - name: Referral Campaigns
+  - name: On-Site Widgets
+  - name: Merchant API Access
+  - name: Advanced Campaigns
+- id: friendbuy-enterprise
+  name: Enterprise / Custom
+  type: enterprise
+  description: >-
+    Custom tier for merchants above roughly $100,000 in monthly company sales,
+    or needing loyalty (tiered loyalty is a reported add-on), advanced
+    attribution, SLAs, and negotiated terms. Contact Friendbuy.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Loyalty and Tiered Loyalty (add-on)
+  - name: Advanced Attribution
+  - name: SLAs and Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

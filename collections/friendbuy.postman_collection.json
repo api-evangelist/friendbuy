@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "Friendbuy Merchant API",
+    "description": "Server-to-server REST API for the Friendbuy referral and loyalty marketing platform. Base URL: https://mapi.fbot.me/v1. Obtain a Bearer JWT from POST /authorization by exchanging your account key and secret, then send it on all other requests. Endpoint paths are grounded in developers.friendbuy.com; request/response bodies are honestly modeled.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{bearerToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://mapi.fbot.me/v1", "type": "string" },
+    { "key": "bearerToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Authorization",
+      "item": [
+        {
+          "name": "Obtain a Bearer token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"key\": \"YOUR_KEY\",\n  \"secret\": \"YOUR_SECRET\"\n}" },
+            "url": { "raw": "{{baseUrl}}/authorization", "host": ["{{baseUrl}}"], "path": ["authorization"] },
+            "description": "Exchange account key and secret for a short-lived Bearer JWT."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create or update a customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id\": \"cust_123\",\n  \"email\": \"buyer@example.com\",\n  \"firstName\": \"Ada\",\n  \"lastName\": \"Lovelace\"\n}" },
+            "url": { "raw": "{{baseUrl}}/postCustomer", "host": ["{{baseUrl}}"], "path": ["postCustomer"] },
+            "description": "Creates or updates a Friendbuy customer record."
+          }
+        },
+        {
+          "name": "Retrieve a customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/getCustomer?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["getCustomer"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Retrieves a customer by id or email."
+          }
+        },
+        {
+          "name": "Retrieve member tier",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/getMemberTierCustomer?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["getMemberTierCustomer"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Returns the loyalty member tier a customer belongs to."
+          }
+        },
+        {
+          "name": "Get user data (GDPR/CCPA)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/getUserData?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["getUserData"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Returns stored personal data for a data-access request."
+          }
+        },
+        {
+          "name": "Delete user data (GDPR/CCPA)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/deleteUserData?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["deleteUserData"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Deletes stored personal data for an erasure request."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Referrals",
+      "item": [
+        {
+          "name": "Generate a personal referral link",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"cust_123\",\n  \"campaignId\": \"camp_1\",\n  \"email\": \"buyer@example.com\"\n}" },
+            "url": { "raw": "{{baseUrl}}/postPersonalReferralLink", "host": ["{{baseUrl}}"], "path": ["postPersonalReferralLink"] },
+            "description": "Generates a unique personal referral link and code for an advocate."
+          }
+        },
+        {
+          "name": "Generate personal referral links (batch)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"requests\": [\n    { \"customerId\": \"cust_123\", \"campaignId\": \"camp_1\" },\n    { \"customerId\": \"cust_456\", \"campaignId\": \"camp_1\" }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/postPersonalReferralLinkBatch", "host": ["{{baseUrl}}"], "path": ["postPersonalReferralLinkBatch"] },
+            "description": "Generates referral links for many advocates at once."
+          }
+        },
+        {
+          "name": "Get referral status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/getReferralStatus?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["getReferralStatus"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Returns referral status for a customer or referral code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "Track a purchase event",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id\": \"order_789\",\n  \"amount\": 84.50,\n  \"currency\": \"USD\",\n  \"customer\": { \"id\": \"cust_123\", \"email\": \"buyer@example.com\" }\n}" },
+            "url": { "raw": "{{baseUrl}}/postPurchaseEvent", "host": ["{{baseUrl}}"], "path": ["postPurchaseEvent"] },
+            "description": "Records a purchase/order conversion for referral attribution."
+          }
+        },
+        {
+          "name": "Track a sign-up event",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"buyer@example.com\",\n  \"customer\": { \"id\": \"cust_123\" }\n}" },
+            "url": { "raw": "{{baseUrl}}/postSignUpEvent", "host": ["{{baseUrl}}"], "path": ["postSignUpEvent"] },
+            "description": "Records an account sign-up conversion."
+          }
+        },
+        {
+          "name": "Track a custom event",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"eventName\": \"trial_started\",\n  \"customer\": { \"id\": \"cust_123\" },\n  \"properties\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/postCustomEvent", "host": ["{{baseUrl}}"], "path": ["postCustomEvent"] },
+            "description": "Records an arbitrary named custom event."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Purchases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/analytics/purchases?fromDate=2026-07-01&toDate=2026-07-10", "host": ["{{baseUrl}}"], "path": ["analytics", "purchases"], "query": [{ "key": "fromDate", "value": "2026-07-01" }, { "key": "toDate", "value": "2026-07-10" }] },
+            "description": "Returns purchase conversions over a date range."
+          }
+        },
+        {
+          "name": "Clicks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/analytics/clicks?fromDate=2026-07-01&toDate=2026-07-10", "host": ["{{baseUrl}}"], "path": ["analytics", "clicks"], "query": [{ "key": "fromDate", "value": "2026-07-01" }, { "key": "toDate", "value": "2026-07-10" }] },
+            "description": "Returns referral-link click events over a date range."
+          }
+        },
+        {
+          "name": "Combined referral rewards",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/analytics/rewards/referral?fromDate=2026-07-01&toDate=2026-07-10", "host": ["{{baseUrl}}"], "path": ["analytics", "rewards", "referral"], "query": [{ "key": "fromDate", "value": "2026-07-01" }, { "key": "toDate", "value": "2026-07-10" }] },
+            "description": "Returns combined advocate and friend referral rewards over a date range."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rewards & Loyalty",
+      "item": [
+        {
+          "name": "Get a customer's loyalty balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/ledger-balance?customerId=cust_123", "host": ["{{baseUrl}}"], "path": ["ledger-balance"], "query": [{ "key": "customerId", "value": "cust_123" }] },
+            "description": "Returns the loyalty ledger balance for one customer."
+          }
+        },
+        {
+          "name": "Adjust a customer's loyalty ledger",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"cust_123\",\n  \"amount\": 100,\n  \"reason\": \"goodwill\"\n}" },
+            "url": { "raw": "{{baseUrl}}/postLedgerAdjustment", "host": ["{{baseUrl}}"], "path": ["postLedgerAdjustment"] },
+            "description": "Credits or debits a customer's loyalty balance."
+          }
+        },
+        {
+          "name": "List redemption options",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/reward/redemption-options", "host": ["{{baseUrl}}"], "path": ["reward", "redemption-options"] },
+            "description": "Returns available reward redemption options."
+          }
+        },
+        {
+          "name": "Redeem a reward",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerId\": \"cust_123\",\n  \"redemptionOptionId\": \"opt_1\"\n}" },
+            "url": { "raw": "{{baseUrl}}/reward/redeem", "host": ["{{baseUrl}}"], "path": ["reward", "redeem"] },
+            "description": "Exchanges loyalty points/credit for a reward."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Management",
+      "item": [
+        {
+          "name": "Block users",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"users\": [\n    { \"email\": \"fraud@example.com\" }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/postBlockUsers", "host": ["{{baseUrl}}"], "path": ["postBlockUsers"] },
+            "description": "Blocks users from referral or loyalty campaigns."
+          }
+        }
+      ]
+    }
+  ]
+}
