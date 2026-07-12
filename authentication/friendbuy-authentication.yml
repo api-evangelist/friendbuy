@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/friendbuy-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: 'Bearer JWT obtained from POST /authorization by exchanging your account key
+    and secret. Passed as `Authorization: Bearer <token>`.'
+  sources:
+  - openapi/friendbuy-openapi.yml

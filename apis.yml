@@ -134,6 +134,10 @@ apis:
     ledger balances, post point/credit adjustments (by customer id or custom
     identifier), list redemption options, redeem rewards, and list issued coupons.
 common:
+- type: DomainSecurity
+  url: security/friendbuy-domain-security.yml
+- type: Authentication
+  url: authentication/friendbuy-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/friendbuy
 - type: Website
