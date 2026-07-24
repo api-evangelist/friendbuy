@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Friendbuy Merchant Analytics Events API
+  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
+
+    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  version: '1.0'
+  contact:
+    name: Friendbuy
+    url: https://friendbuy.com
+  license:
+    name: Proprietary
+    url: https://friendbuy.com/terms
+servers:
+- url: https://mapi.fbot.me/v1
+  description: Friendbuy Merchant API
+security:
+- bearerAuth: []
+tags:
+- name: Events
+  description: Track purchase, sign-up, and custom conversion events.
+paths:
+  /postPurchaseEvent:
+    post:
+      operationId: postPurchaseEvent
+      tags:
+      - Events
+      summary: Track a purchase event
+      description: Records a purchase/order conversion so Friendbuy can attribute it to a referral and trigger advocate and friend rewards.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseEvent'
+      responses:
+        '200':
+          description: The recorded purchase event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /postSignUpEvent:
+    post:
+      operationId: postSignUpEvent
+      tags:
+      - Events
+      summary: Track a sign-up event
+      description: Records an account sign-up conversion so Friendbuy can attribute it to a referral and trigger rewards for sign-up-based campaigns.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpEvent'
+      responses:
+        '200':
+          description: The recorded sign-up event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /postCustomEvent:
+    post:
+      operationId: postCustomEvent
+      tags:
+      - Events
+      summary: Track a custom event
+      description: Records an arbitrary named custom event used to trigger custom campaigns or advanced attribution rules.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomEvent'
+      responses:
+        '200':
+          description: The recorded custom event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    CustomEvent:
+      type: object
+      required:
+      - eventName
+      properties:
+        eventName:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+        properties:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    PurchaseEvent:
+      type: object
+      required:
+      - id
+      - amount
+      - currency
+      properties:
+        id:
+          type: string
+          description: Your order/transaction id.
+        amount:
+          type: number
+        currency:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+        couponCode:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    SignUpEvent:
+      type: object
+      required:
+      - email
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+    EventResult:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
+    CustomerInput:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Your identifier for the customer.
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        isNewCustomer:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'

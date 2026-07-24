@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Friendbuy Merchant Analytics Referrals API
+  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
+
+    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  version: '1.0'
+  contact:
+    name: Friendbuy
+    url: https://friendbuy.com
+  license:
+    name: Proprietary
+    url: https://friendbuy.com/terms
+servers:
+- url: https://mapi.fbot.me/v1
+  description: Friendbuy Merchant API
+security:
+- bearerAuth: []
+tags:
+- name: Referrals
+  description: Generate personal referral links and check referral status.
+paths:
+  /postPersonalReferralLink:
+    post:
+      operationId: postPersonalReferralLink
+      tags:
+      - Referrals
+      summary: Generate a personal referral link
+      description: Generates a unique personal referral link (and code) for an advocate customer in a given campaign, for use in emails or your own UI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferralLinkRequest'
+      responses:
+        '200':
+          description: The generated referral link.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferralLink'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /postPersonalReferralLinkBatch:
+    post:
+      operationId: postPersonalReferralLinkBatch
+      tags:
+      - Referrals
+      summary: Generate personal referral links in batch
+      description: Generates personal referral links for many advocates at once, returning one link per requested customer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requests:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ReferralLinkRequest'
+      responses:
+        '200':
+          description: The generated referral links.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReferralLink'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /getReferralStatus:
+    get:
+      operationId: getReferralStatus
+      tags:
+      - Referrals
+      summary: Get referral status
+      description: Returns the status of referrals associated with a customer or referral code - for example whether a referred friend has converted.
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      - name: referralCode
+        in: query
+        required: false
+        description: A referral code to look up.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The referral status.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    ReferralLink:
+      type: object
+      properties:
+        customerId:
+          type: string
+        campaignId:
+          type: string
+        link:
+          type: string
+          format: uri
+        referralCode:
+          type: string
+    ReferralLinkRequest:
+      type: object
+      required:
+      - customerId
+      - campaignId
+      properties:
+        customerId:
+          type: string
+        campaignId:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'

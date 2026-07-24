@@ -1,0 +1,90 @@
+openapi: 3.0.3
+info:
+  title: Friendbuy Merchant Analytics Management API
+  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
+
+    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  version: '1.0'
+  contact:
+    name: Friendbuy
+    url: https://friendbuy.com
+  license:
+    name: Proprietary
+    url: https://friendbuy.com/terms
+servers:
+- url: https://mapi.fbot.me/v1
+  description: Friendbuy Merchant API
+security:
+- bearerAuth: []
+tags:
+- name: Management
+  description: Block users from campaigns.
+paths:
+  /postBlockUsers:
+    post:
+      operationId: postBlockUsers
+      tags:
+      - Management
+      summary: Block users from campaigns
+      description: Blocks one or more users (by email or customer id) from participating in referral or loyalty campaigns, for fraud prevention.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                users:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      customerId:
+                        type: string
+                      email:
+                        type: string
+      responses:
+        '200':
+          description: Block confirmation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocked:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'

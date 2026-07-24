@@ -1,0 +1,245 @@
+openapi: 3.0.3
+info:
+  title: Friendbuy Merchant Analytics API
+  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
+
+    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  version: '1.0'
+  contact:
+    name: Friendbuy
+    url: https://friendbuy.com
+  license:
+    name: Proprietary
+    url: https://friendbuy.com/terms
+servers:
+- url: https://mapi.fbot.me/v1
+  description: Friendbuy Merchant API
+security:
+- bearerAuth: []
+tags:
+- name: Analytics
+  description: Pull campaign, share, click, conversion, and reward analytics.
+paths:
+  /analytics/widget-views:
+    get:
+      operationId: getWidgetViews
+      tags:
+      - Analytics
+      summary: Widget views
+      description: Returns widget impression/view counts over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/shares:
+    get:
+      operationId: getShares
+      tags:
+      - Analytics
+      summary: Shares
+      description: Returns share events over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/clicks:
+    get:
+      operationId: getClicks
+      tags:
+      - Analytics
+      summary: Clicks
+      description: Returns referral-link click events over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/account-sign-ups:
+    get:
+      operationId: getAccountSignUps
+      tags:
+      - Analytics
+      summary: Account sign-ups
+      description: Returns sign-up conversions over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/purchases:
+    get:
+      operationId: getPurchasesAnalytics
+      tags:
+      - Analytics
+      summary: Purchases
+      description: Returns purchase conversions over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/distributed-advocate-rewards:
+    get:
+      operationId: getDistributedAdvocateRewards
+      tags:
+      - Analytics
+      summary: Distributed advocate rewards
+      description: Returns advocate rewards distributed over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/distributed-friend-incentives:
+    get:
+      operationId: getDistributedFriendIncentives
+      tags:
+      - Analytics
+      summary: Distributed friend incentives
+      description: Returns friend incentives distributed over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/rewards/referral:
+    get:
+      operationId: getReferralRewards
+      tags:
+      - Analytics
+      summary: Combined referral rewards
+      description: Returns combined advocate and friend referral rewards over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/email-captures:
+    get:
+      operationId: getEmailCaptures
+      tags:
+      - Analytics
+      summary: Email captures
+      description: Returns captured email addresses over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /analytics/email-metrics:
+    get:
+      operationId: getEmailMetrics
+      tags:
+      - Analytics
+      summary: Email metrics
+      description: Returns aggregate email-performance metrics over a date range.
+      parameters:
+      - $ref: '#/components/parameters/FromDate'
+      - $ref: '#/components/parameters/ToDate'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AnalyticsPage:
+      description: A page of analytics rows with an optional next-page token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+              nextPageToken:
+                type: string
+  parameters:
+    ToDate:
+      name: toDate
+      in: query
+      required: false
+      description: End of the date range (inclusive), ISO 8601.
+      schema:
+        type: string
+        format: date
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+    FromDate:
+      name: fromDate
+      in: query
+      required: false
+      description: Start of the date range (inclusive), ISO 8601.
+      schema:
+        type: string
+        format: date
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'

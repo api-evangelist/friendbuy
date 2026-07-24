@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Friendbuy Merchant Analytics Rewards & Loyalty API
+  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
+
+    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  version: '1.0'
+  contact:
+    name: Friendbuy
+    url: https://friendbuy.com
+  license:
+    name: Proprietary
+    url: https://friendbuy.com/terms
+servers:
+- url: https://mapi.fbot.me/v1
+  description: Friendbuy Merchant API
+security:
+- bearerAuth: []
+tags:
+- name: Rewards & Loyalty
+  description: Manage loyalty ledger balances, adjustments, redemptions, and coupons.
+paths:
+  /analytics/loyalty/ledger-heads:
+    get:
+      operationId: getLedgerHeads
+      tags:
+      - Rewards & Loyalty
+      summary: List all customer loyalty balances
+      description: Returns the current loyalty ledger balance for all customers.
+      parameters:
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/AnalyticsPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /ledger-balance:
+    get:
+      operationId: getLedgerBalance
+      tags:
+      - Rewards & Loyalty
+      summary: Get a customer's loyalty balance
+      description: Returns the loyalty ledger balance for a single customer by customer id.
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: The customer's ledger balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerBalance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /ledger-balance-custom:
+    get:
+      operationId: getLedgerBalanceCustom
+      tags:
+      - Rewards & Loyalty
+      summary: Get a customer's loyalty balance by custom identifier
+      description: Returns the loyalty ledger balance for a customer keyed by a custom identifier.
+      parameters:
+      - name: customIdentifier
+        in: query
+        required: true
+        description: A merchant-defined custom identifier for the customer.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The customer's ledger balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerBalance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /postLedgerAdjustment:
+    post:
+      operationId: postLedgerAdjustment
+      tags:
+      - Rewards & Loyalty
+      summary: Adjust a customer's loyalty ledger
+      description: Credits or debits a customer's loyalty point/credit balance by customer id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LedgerAdjustment'
+      responses:
+        '200':
+          description: The resulting ledger balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerBalance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /postLedgerAdjustmentCustom:
+    post:
+      operationId: postLedgerAdjustmentCustom
+      tags:
+      - Rewards & Loyalty
+      summary: Adjust a customer's loyalty ledger by custom identifier
+      description: Credits or debits a customer's loyalty balance keyed by a custom identifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LedgerAdjustment'
+              - type: object
+                properties:
+                  customIdentifier:
+                    type: string
+      responses:
+        '200':
+          description: The resulting ledger balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerBalance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /reward/redemption-options:
+    get:
+      operationId: getRedemptionOptions
+      tags:
+      - Rewards & Loyalty
+      summary: List reward redemption options
+      description: Returns the available reward redemption options for the loyalty program.
+      responses:
+        '200':
+          description: Available redemption options.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /reward/redeem:
+    post:
+      operationId: redeemReward
+      tags:
+      - Rewards & Loyalty
+      summary: Redeem a reward
+      description: Exchanges a customer's loyalty points/credit for a reward, returning the issued reward or coupon.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedeemRequest'
+      responses:
+        '200':
+          description: The redeemed reward.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /reward/coupons:
+    get:
+      operationId: getCoupons
+      tags:
+      - Rewards & Loyalty
+      summary: List a customer's coupons
+      description: Returns the coupon codes issued to a customer.
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: The customer's coupons.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AnalyticsPage:
+      description: A page of analytics rows with an optional next-page token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+              nextPageToken:
+                type: string
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    RedeemRequest:
+      type: object
+      required:
+      - customerId
+      - redemptionOptionId
+      properties:
+        customerId:
+          type: string
+        redemptionOptionId:
+          type: string
+    LedgerAdjustment:
+      type: object
+      required:
+      - customerId
+      - amount
+      properties:
+        customerId:
+          type: string
+        amount:
+          type: number
+          description: Positive to credit, negative to debit.
+        reason:
+          type: string
+    LedgerBalance:
+      type: object
+      properties:
+        customerId:
+          type: string
+        balance:
+          type: number
+        currency:
+          type: string
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'
