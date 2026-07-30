@@ -13,7 +13,20 @@ description: Friendbuy is a referral and loyalty marketing platform for ecommerc
   key/secret exchange at POST /authorization that returns a short-lived Bearer
   JWT. Access to the API and to production credentials is gated behind a paid,
   contact-sales plan.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/friendbuy.png
 tags:
 - Referral Marketing
 - Loyalty
@@ -25,114 +38,132 @@ created: '2026-07-10'
 modified: '2026-07-10'
 specificationVersion: '0.19'
 apis:
-- aid: friendbuy:friendbuy-customers-api
-  name: Friendbuy Customers API
-  tags:
-  - Customers
-  - Profiles
-  - GDPR
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.friendbuy.com
-  baseURL: https://mapi.fbot.me/v1
-  properties:
-  - url: https://developers.friendbuy.com
-    type: Documentation
-  - url: https://developers.friendbuy.com
-    type: APIReference
-  - url: openapi/friendbuy-openapi.yml
-    type: OpenAPI
-  - url: collections/friendbuy.postman_collection.json
-    type: PostmanCollection
-  - url: collections/friendbuy.opencollection.json
-    type: OpenCollection
-  description: Create or update customer records synced from your store, retrieve
-    a customer by id or email, look up loyalty member tier, and service GDPR/CCPA
-    data-access and erasure requests via getUserData and deleteUserData.
-- aid: friendbuy:friendbuy-referrals-api
-  name: Friendbuy Referrals API
-  tags:
-  - Referrals
-  - Referral Links
-  - Advocacy
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.friendbuy.com
-  baseURL: https://mapi.fbot.me/v1
-  properties:
-  - url: https://developers.friendbuy.com
-    type: Documentation
-  - url: openapi/friendbuy-openapi.yml
-    type: OpenAPI
-  - url: collections/friendbuy.postman_collection.json
-    type: PostmanCollection
-  - url: collections/friendbuy.opencollection.json
-    type: OpenCollection
-  description: Generate unique personal referral links and codes for advocate
-    customers - singly or in batch - and check the status of referrals tied to a
-    customer or referral code.
-- aid: friendbuy:friendbuy-events-api
-  name: Friendbuy Events API
-  tags:
-  - Events
-  - Purchases
-  - Conversions
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.friendbuy.com
-  baseURL: https://mapi.fbot.me/v1
-  properties:
-  - url: https://developers.friendbuy.com
-    type: Documentation
-  - url: openapi/friendbuy-openapi.yml
-    type: OpenAPI
-  - url: collections/friendbuy.postman_collection.json
-    type: PostmanCollection
-  - url: collections/friendbuy.opencollection.json
-    type: OpenCollection
-  description: Track conversion events server-to-server - purchase/order events,
-    account sign-ups, and arbitrary custom events - so Friendbuy can attribute
-    them to referrals and trigger advocate and friend rewards.
 - aid: friendbuy:friendbuy-analytics-api
   name: Friendbuy Analytics API
+  description: Pull campaign, share, click, conversion, and reward analytics.
+  humanURL: https://developers.friendbuy.com
+  baseURL: https://mapi.fbot.me/v1
   tags:
   - Analytics
-  - Reporting
-  - Campaigns
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/friendbuy-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
+- aid: friendbuy:friendbuy-authorization-api
+  name: Friendbuy Authorization API
+  description: Exchange account key and secret for a Bearer token.
   humanURL: https://developers.friendbuy.com
   baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Authorization
   properties:
-  - url: https://developers.friendbuy.com
-    type: Documentation
-  - url: openapi/friendbuy-openapi.yml
-    type: OpenAPI
-  - url: collections/friendbuy.postman_collection.json
-    type: PostmanCollection
-  - url: collections/friendbuy.opencollection.json
-    type: OpenCollection
-  description: Pull date-ranged, paginated campaign analytics - widget views,
-    shares, clicks, account sign-ups, purchases, distributed advocate rewards and
-    friend incentives, combined referral rewards, email captures, and email
-    metrics.
+  - type: OpenAPI
+    url: openapi/friendbuy-authorization-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
+- aid: friendbuy:friendbuy-customers-api
+  name: Friendbuy Customers API
+  description: Create and retrieve customer records and manage customer data requests.
+  humanURL: https://developers.friendbuy.com
+  baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/friendbuy-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
+- aid: friendbuy:friendbuy-events-api
+  name: Friendbuy Events API
+  description: Track purchase, sign-up, and custom conversion events.
+  humanURL: https://developers.friendbuy.com
+  baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/friendbuy-events-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
+- aid: friendbuy:friendbuy-management-api
+  name: Friendbuy Management API
+  description: Block users from campaigns.
+  humanURL: https://developers.friendbuy.com
+  baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Management
+  properties:
+  - type: OpenAPI
+    url: openapi/friendbuy-management-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
+- aid: friendbuy:friendbuy-referrals-api
+  name: Friendbuy Referrals API
+  description: Generate personal referral links and check referral status.
+  humanURL: https://developers.friendbuy.com
+  baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Referrals
+  properties:
+  - type: OpenAPI
+    url: openapi/friendbuy-referrals-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
 - aid: friendbuy:friendbuy-rewards-loyalty-api
   name: Friendbuy Rewards & Loyalty API
-  tags:
-  - Loyalty
-  - Rewards
-  - Ledger
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  description: Manage loyalty ledger balances, adjustments, redemptions, and coupons.
   humanURL: https://developers.friendbuy.com
   baseURL: https://mapi.fbot.me/v1
+  tags:
+  - Rewards & Loyalty
   properties:
-  - url: https://developers.friendbuy.com
-    type: Documentation
-  - url: openapi/friendbuy-openapi.yml
-    type: OpenAPI
-  - url: collections/friendbuy.postman_collection.json
-    type: PostmanCollection
-  - url: collections/friendbuy.opencollection.json
-    type: OpenCollection
-  description: Manage the loyalty program - read individual and all-customer
-    ledger balances, post point/credit adjustments (by customer id or custom
-    identifier), list redemption options, redeem rewards, and list issued coupons.
+  - type: OpenAPI
+    url: openapi/friendbuy-rewards-loyalty-api-openapi.yml
+  - type: Documentation
+    url: https://developers.friendbuy.com
+  - type: APIReference
+    url: https://developers.friendbuy.com
+  - type: PostmanCollection
+    url: collections/friendbuy.postman_collection.json
+  - type: OpenCollection
+    url: collections/friendbuy.opencollection.json
 common:
 - type: AgenticAccess
   url: agentic-access/friendbuy-agentic-access.yml
