@@ -1,0 +1,26 @@
+{
+  "provider": "friendbuy",
+  "sources": [
+    "friendbuy-analytics-api-openapi.yml",
+    "friendbuy-authorization-api-openapi.yml",
+    "friendbuy-customers-api-openapi.yml",
+    "friendbuy-events-api-openapi.yml",
+    "friendbuy-management-api-openapi.yml",
+    "friendbuy-referrals-api-openapi.yml",
+    "friendbuy-rewards-loyalty-api-openapi.yml"
+  ],
+  "outputs": [
+    "friendbuy-analytics-api-openapi.yml",
+    "friendbuy-authorization-api-openapi.yml",
+    "friendbuy-customers-api-openapi.yml",
+    "friendbuy-events-api-openapi.yml",
+    "friendbuy-management-api-openapi.yml",
+    "friendbuy-referrals-api-openapi.yml",
+    "friendbuy-rewards-loyalty-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
