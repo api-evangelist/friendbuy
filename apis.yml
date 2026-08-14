@@ -35,7 +35,7 @@ tags:
 - Marketing
 - Advocacy
 created: '2026-07-10'
-modified: '2026-07-10'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
 - aid: friendbuy:friendbuy-analytics-api
@@ -48,6 +48,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-analytics-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-analytics-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -66,6 +68,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-authorization-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-authorization-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -84,6 +88,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-customers-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-customers-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -102,6 +108,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-events-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-events-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -120,6 +128,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-management-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-management-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -138,6 +148,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-referrals-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-referrals-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -156,6 +168,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/friendbuy-rewards-loyalty-api-openapi.yml
+  - type: Overlay
+    url: overlays/friendbuy-rewards-loyalty-overlay.yaml
   - type: Documentation
     url: https://developers.friendbuy.com
   - type: APIReference
@@ -185,6 +199,53 @@ common:
   url: finops/friendbuy-finops.yml
 - url: https://friendbuy.com/blog
   type: Blog
+- type: Packages
+  url: packages/friendbuy-packages.yml
+- type: SDKs
+  url: packages/friendbuy-packages.yml
+- type: Conventions
+  url: conventions/friendbuy-conventions.yml
+- type: ErrorCatalog
+  url: errors/friendbuy-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/friendbuy-lifecycle.yml
+- type: StatusPage
+  url: https://friendbuy.statuspage.io
+- type: Conformance
+  url: conformance/friendbuy-conformance.yml
+- type: Webhooks
+  url: asyncapi/friendbuy-webhooks.yml
+- type: DataModel
+  url: data-model/friendbuy-data-model.yml
+- type: Components
+  url: components/friendbuy-components.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/friendbuy-llms.txt
+- type: ChangeLog
+  url: https://www.friendbuy.com/product-updates
+- type: DeveloperPortal
+  url: https://developers.friendbuy.com
+- type: APIReference
+  url: https://developers.friendbuy.com
+- type: GettingStarted
+  url: https://developers.friendbuy.com#integration-setup
+- type: Support
+  url: https://support.friendbuy.com
+- type: GitHubOrganization
+  url: https://github.com/friendbuy
+- type: Login
+  url: https://retailer.fbot.me
+- type: TermsOfService
+  url: https://friendbuy.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://friendbuy.com/privacy
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1
