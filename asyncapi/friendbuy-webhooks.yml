@@ -1,0 +1,147 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+spec_type: Webhooks
+note: >-
+  Friendbuy publishes NO AsyncAPI document — searched the developer docs, the
+  friendbuy GitHub org and /asyncapi.yaml on every host, all misses. It does
+  publish a full, dated, HMAC-signed webhook + callback catalog in its developer
+  documentation, captured here verbatim from that reference. Nothing in this
+  file is invented: every event type, payload property and policy below is
+  stated on developers.friendbuy.com. Webhooks are configured per account on the
+  "Webhooks & Callbacks" tab of the Developer Center in the Retailer App
+  (https://retailer.fbot.me).
+transport:
+  style: http-callback
+  method: POST
+  direction: friendbuy-to-merchant
+  content_type: application/json
+  subscriber_endpoint: merchant-supplied URL, configured per webhook in the Retailer App
+delivery:
+  success_status: 200
+  retry:
+    policy: Retry every 15 minutes until 24 hours have elapsed or a 200 is received.
+    interval: PT15M
+    max_duration: PT24H
+  timeout:
+    seconds: 10
+    note: If Friendbuy does not receive a response within 10 seconds the request is aborted; the Retailer App test tool reports 504 for a timed-out call.
+  batching: >-
+    The `data` property is an ARRAY. Multiple events may be delivered in a
+    single webhook call when they occur in quick succession — consumers must
+    iterate `data`, never assume one event per request.
+  testing: >-
+    The "Test Endpoint" button on the Webhooks & Callbacks tab of the Developer
+    Center sends a test request to the configured URL and displays the resulting
+    status.
+security:
+  signature_header: X-Friendbuy-Hmac-SHA256
+  algorithm: HMAC-SHA256
+  encoding: base64
+  signed_payload: raw request body
+  key: the merchant's Friendbuy secret key
+  docs: https://developers.friendbuy.com
+envelope:
+  properties:
+  - {name: id, type: string, description: 'The id of the webhook call; useful for troubleshooting.'}
+  - {name: type, type: string, description: 'The event type discriminator; see events below.'}
+  - {name: createdOn, type: 'string (ISO 8601 timestamp)', description: The date and time the webhook request was made.}
+  - {name: data, type: array, description: 'One or more event payloads; shape depends on type.'}
+events:
+- name: Advocate Reward
+  type: advocateReward
+  group: Reward Webhook
+  description: >-
+    Issued when a referred friend successfully converts and the referring
+    advocate earns a reward. The preferred mechanism for depositing credit or
+    points into the advocate's account in the merchant's own system.
+  data_properties: [rewardId, rewardType, rewardUnit, emailAddress, rewardAmount, createdOn,
+    customerId, ipAddress, couponCode, rewardInfo, rewardTrigger, 'friends[]']
+  friends_properties: [friendEmailAddress, friendCustomerId, conversionNumber]
+- name: Friend Incentive
+  type: friendIncentive
+  group: Reward Webhook
+  description: >-
+    Issued when a referred friend successfully converts and earns the friend-side
+    incentive. Same envelope as advocateReward; `type` is the discriminator when a
+    single endpoint serves both.
+  data_properties: [rewardId, rewardType, rewardUnit, emailAddress, rewardAmount, createdOn,
+    customerId, ipAddress, couponCode, rewardTrigger, advocateEmailAddress, advocateCustomerId]
+- name: Loyalty Reward
+  type: loyaltyReward
+  group: Reward Webhook
+  description: Issued when a loyalty customer completes a loyalty earning event and earns a reward.
+  data_properties: [createdOn, customerId, couponCode, emailAddress, ipAddress, rewardId,
+    rewardType, rewardUnit, rewardAmount, rewardTrigger]
+- name: Email Capture
+  type: emailCapture
+  description: >-
+    Fired when Friendbuy captures an email address (for example a friend
+    entering an email to claim an incentive), carrying campaign, referral
+    channel/code, advocate and incentive context.
+  data_properties: [eventId, emailAddress, name, mobileNumber, 'campaign{id,name}',
+    'referral{channel,code}', 'advocate{email,name}', attributionId, 'incentive{couponCode,amount}']
+- name: Email Opt-Out
+  type: emailOptOut
+  description: >-
+    Fired when a friend who received an advocate share email clicks the
+    unsubscribe link. Friendbuy stops sending share emails to that address for
+    all of the merchant's campaigns; the webhook lets the merchant mirror the
+    opt-out into their own suppression list.
+  data_properties: [emailAddress, campaignId, campaignName]
+- name: Receipt
+  type: receipt
+  description: >-
+    Fired when a submitted receipt is processed by receipt scanning, carrying
+    the approval status and the parsed store, purchase and line-item detail.
+  data_properties: [eventId, receiptId, status, email, customerId, merchantId, storeName,
+    storeId, storeAddress, storeCity, storeState, storeCountry, purchaseDate, submissionDate,
+    subtotal, total, currency, 'products[]']
+- name: Ledger Transaction
+  type: ledgerTransaction
+  description: Fired when a customer's loyalty ledger balance is credited or debited and the transaction is finalized.
+  data_properties: [transactionId, customerId, ledgerCurrency, createdOn, value, ledgerBalance, sourceName, note]
+- name: Customer Update
+  type: customerUpdate
+  description: Fired when a customer's loyalty opt-in status or member tier details change.
+  data_properties: [customerId, customerEmail, customerName, 'loyaltyDetails{loyaltyOptInStatus,optedInOn,everOptedIn}',
+    'memberTierDetails{memberTierId,memberTierNameCached,memberTierPrecedenceCached,memberTierUpdatedOn}', updatedOn]
+callbacks:
+- name: Reward Validation Callback
+  direction: friendbuy-to-merchant
+  method: POST
+  description: >-
+    Synchronous authorization hook. Before fulfilling a reward, Friendbuy POSTs
+    the conversion detail to the Validation URL configured under Reward Criteria
+    and uses the merchant's HTTP STATUS CODE as the decision.
+  semantics:
+    '200': Reward is validated and will be fulfilled.
+    '400': Reward is invalidated and will not be fulfilled.
+    other: Treated as an error and retried.
+  retry:
+    policy: Retry every 15 minutes for up to 72 hours, or until the reward is approved or rejected.
+    interval: PT15M
+    max_duration: PT72H
+    on_exhaustion: The reward is rejected and the status noted as an error.
+  use_case: Let the merchant's own system veto a reward for returns, cancellations or bespoke fraud rules.
+- name: Email Recipient Authorization Callback
+  direction: friendbuy-to-merchant
+  method: POST
+  type: emailAuth
+  description: >-
+    Fired after an outbound share email passes Friendbuy's own opt-out checks.
+    Friendbuy POSTs a list of candidate recipient addresses and the merchant
+    responds with which addresses are allowed, applying the merchant's own
+    suppression rules on top of Friendbuy's.
+  request_properties: [id, type, 'data (array of email address strings)', createdOn]
+- name: Visitor Status
+  direction: friendbuy-to-browser
+  description: >-
+    Client-side payload describing the visitor's referral/loyalty status,
+    delivered through the Merchant SDK. The docs describe verifying the visitor
+    status payload signature before trusting it.
+  note: Browser-surface, not an HTTP webhook; recorded for completeness of the event surface.
+coverage:
+  webhook_events: 8
+  callbacks: 3
+  asyncapi_published: false

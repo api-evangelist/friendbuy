@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Rewards & Loyalty API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rewards & Loyalty",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all customer loyalty balances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/loyalty/ledger-heads",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns the current loyalty ledger balance for all customers."
+        },
+        {
+          "info": {
+            "name": "Get a customer's loyalty balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/ledger-balance",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              }
+            ]
+          },
+          "docs": "Returns the loyalty ledger balance for a single customer by customer id."
+        },
+        {
+          "info": {
+            "name": "Get a customer's loyalty balance by custom identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/ledger-balance-custom",
+            "params": [
+              {
+                "name": "customIdentifier",
+                "value": "",
+                "type": "query",
+                "description": "A merchant-defined custom identifier for the customer."
+              }
+            ]
+          },
+          "docs": "Returns the loyalty ledger balance for a customer keyed by a custom identifier."
+        },
+        {
+          "info": {
+            "name": "Adjust a customer's loyalty ledger",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postLedgerAdjustment",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Credits or debits a customer's loyalty point/credit balance by customer id."
+        },
+        {
+          "info": {
+            "name": "Adjust a customer's loyalty ledger by custom identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postLedgerAdjustmentCustom",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Credits or debits a customer's loyalty balance keyed by a custom identifier."
+        },
+        {
+          "info": {
+            "name": "List reward redemption options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/reward/redemption-options"
+          },
+          "docs": "Returns the available reward redemption options for the loyalty program."
+        },
+        {
+          "info": {
+            "name": "Redeem a reward",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/reward/redeem",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchanges a customer's loyalty points/credit for a reward, returning the issued reward or coupon."
+        },
+        {
+          "info": {
+            "name": "List a customer's coupons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/reward/coupons",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              }
+            ]
+          },
+          "docs": "Returns the coupon codes issued to a customer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,57 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+note: >-
+  Versioning is read from the documented base URL; the status page was probed
+  live and confirmed to be Friendbuy's own Statuspage instance (page title
+  "Friendbuy Status"). Deprecation and SLA are recorded as ABSENT — searched the
+  developer docs, friendbuy.com and its sitemap on 2026-08-13 and found no
+  deprecation policy, no Sunset/Deprecation header support and no published
+  uptime SLA. friendbuy.com/changelog and /release-notes both 404; the product
+  updates page exists but renders its entries client-side.
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://mapi.fbot.me/v1
+  docs: https://developers.friendbuy.com
+  note: The single documented version since the Merchant API was published; no prior version is referenced in the docs.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: No deprecation or sunset policy is published. No Deprecation pointer is wired into apis.yml.
+sla:
+  url: null
+  uptime_target: null
+  note: No uptime commitment is published on the public site; SLAs are referenced only as an enterprise-contract item.
+status_page:
+  url: https://friendbuy.statuspage.io
+  provider: Atlassian Statuspage
+  verified:
+    fetched: '2026-08-13'
+    http_status: 200
+    page_title: Friendbuy Status
+  note: >-
+    Not linked from the developer docs or the marketing footer; found by probing
+    the Statuspage namespace and confirmed by page title. status.friendbuy.com
+    and status.fbot.me do not resolve.
+release_notes:
+  url: https://www.friendbuy.com/product-updates
+  http_status: 200
+  machine_readable: false
+  note: >-
+    Published product-updates page, but the entry list is injected client-side —
+    the served HTML contains no dated entries and no item links, so no structured
+    changelog could be captured. See changelog/friendbuy-changelog.yml.
+  archived_source:
+    url: https://github.com/friendbuy/release-notes
+    note: Friendbuy Platform Release Notes repo in the friendbuy GitHub org; last pushed 2018-01-10, long dormant.
+deprecated_operations: []
+surface_drift:
+  note: >-
+    The developer reference documents three operations that are NOT present in
+    the OpenAPI files in this repo — getLedgerEntries, GET /analytics/receipts
+    (Receipts), and the "GET Signups"/"GET Purchases" doc headings that map to
+    getAccountSignUps/getPurchasesAnalytics here. Recorded rather than
+    back-filled, because Friendbuy publishes no machine-readable spec to harvest
+    those shapes from.

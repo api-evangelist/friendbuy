@@ -1,15 +1,82 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/friendbuy-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: openapi/ (7 refined specs in this repo)
+docs: https://developers.friendbuy.com
+note: >-
+  Upgraded from derived to searched on 2026-08-13 by reading the "Authorization"
+  and "Authentication Scheme" sections of the Friendbuy developer documentation.
+  The spec-derived baseline (a single http/bearer scheme) is correct but tells an
+  agent nothing about how to obtain the token, how long it lives, or how the
+  credential is issued — all three are recorded below from the docs. Friendbuy
+  runs NO OAuth 2.0 and NO OpenID Connect (there is no
+  /.well-known/openid-configuration and no oauth2 securityScheme anywhere), so
+  there is no scopes/ artifact for this provider.
 summary:
-  types:
-  - http
+  types: [http]
+  http_schemes: [bearer]
+  bearer_formats: [JWT]
+  api_key_in: []
+  oauth2_flows: []
+  scopes: none
 schemes:
 - name: bearerAuth
   type: http
   scheme: bearer
   bearerFormat: JWT
-  description: 'Bearer JWT obtained from POST /authorization by exchanging your account key
-    and secret. Passed as `Authorization: Bearer <token>`.'
+  description: 'Bearer JWT obtained from POST /authorization by exchanging your account key and secret. Passed as `Authorization: Bearer <token>`.'
+  applied_to: every operation in every Friendbuy Merchant API spec
   sources:
-  - openapi/friendbuy-openapi.yml
+  - openapi/friendbuy-analytics-api-openapi.yml
+  - openapi/friendbuy-authorization-api-openapi.yml
+  - openapi/friendbuy-customers-api-openapi.yml
+  - openapi/friendbuy-events-api-openapi.yml
+  - openapi/friendbuy-management-api-openapi.yml
+  - openapi/friendbuy-referrals-api-openapi.yml
+  - openapi/friendbuy-rewards-loyalty-api-openapi.yml
+token_exchange:
+  operation: createAuthorization
+  method: POST
+  url: https://mapi.fbot.me/v1/authorization
+  content_type: application/json
+  authentication: none (the key/secret pair IS the credential)
+  request:
+    key: Your Merchant API access key.
+    secret: Your Merchant API secret.
+  response:
+    tokenType: Bearer
+    token: The JWT to send on subsequent requests.
+    expires: ISO 8601 timestamp at which the token stops working.
+  lifetime: short-lived; the exact TTL is not published — read `expires` from the response
+  guidance: Cache the token until near `expires` and re-authorize; do not call /authorization per request.
+credential_issuance:
+  self_serve: false
+  process: >-
+    Account key and secret are issued by Friendbuy. The documentation instructs
+    merchants to "Contact Friendbuy support for your key and secret"; keys are
+    surfaced in the Developer Center section of the Retailer App
+    (https://retailer.fbot.me). There is no developer sign-up that yields an API
+    credential, and no sandbox or test-mode key.
+  gate: paid plan (contact sales)
+other_credentials:
+- name: merchantId
+  surface: browser Merchant SDK
+  where: https://retailer.fbot.me/settings/general
+  description: >-
+    Public identifier pushed onto window.friendbuyAPI to load the merchant's
+    campaign bundle. Not a secret and not accepted by the Merchant API.
+- name: secret key (webhook signing)
+  surface: outbound webhooks and callbacks
+  description: >-
+    The same merchant secret is used to compute the base64 HMAC-SHA256 signature
+    delivered in the X-Friendbuy-Hmac-SHA256 header. Verify it over the raw
+    request body before parsing. See asyncapi/friendbuy-webhooks.yml.
+- name: customer authentication signature
+  surface: browser Merchant SDK
+  description: >-
+    Merchant-signed identity handshake documented under "Customer
+    Authentication", used so widget state binds to a verified customer rather
+    than an anonymous visitor.
+unauthorized_response:
+  status: 401
+  envelope: '{error, message, code, reference}'
+  guidance: Re-run the token exchange and retry once; a repeated 401 means the key/secret pair is wrong or revoked.

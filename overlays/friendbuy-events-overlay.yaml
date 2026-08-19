@@ -1,0 +1,72 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Friendbuy Merchant Events API
+  version: 1.0.0
+extends: openapi/friendbuy-events-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  Enhancements derived from the API Evangelist artifacts in this repository
+  (conventions/, errors/, asyncapi/, lifecycle/, authentication/,
+  data-model/, rate-limits/), themselves read from
+  https://developers.friendbuy.com. This overlay is never applied to the
+  source document; it records what API Evangelist knows that the
+  specification does not carry.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: friendbuy
+    x-apievangelist-artifacts:
+      conventions: conventions/friendbuy-conventions.yml
+      errors: errors/friendbuy-problem-types.yml
+      webhooks: asyncapi/friendbuy-webhooks.yml
+      lifecycle: lifecycle/friendbuy-lifecycle.yml
+      authentication: authentication/friendbuy-authentication.yml
+      data_model: data-model/friendbuy-data-model.yml
+      rate_limits: rate-limits/friendbuy-rate-limits.yml
+    x-agent-notes:
+      idempotency: >-
+        Not supported. Friendbuy documents no idempotency key for any write
+        operation, so a blind retry can double-count a conversion or
+        double-credit a loyalty ledger.
+      credentials: >-
+        Account key and secret are issued by Friendbuy (Developer Center in
+        the Retailer App). There is no self-serve signup, no sandbox and no
+        test-mode key prefix.
+- target: $.info
+  update:
+    x-lifecycle:
+      versioning: uri-path
+      current: v1
+      status_page: https://friendbuy.statuspage.io
+      deprecation_policy: null
+- target: $.components.schemas.Error
+  update:
+    x-error-envelope:
+      rfc9457: false
+      properties: [error, message, code, reference]
+      statuses: [400, 401, 404, 422, 429, 500]
+      note: >-
+        Flat proprietary envelope, confirmed live against https://mapi.fbot.me
+        on 2026-08-13. `reference` is the value to quote to Friendbuy support.
+- target: $.paths['/postPurchaseEvent'].post
+  update:
+    x-idempotency:
+      supported: false
+      note: >-
+        No idempotency key is documented. Retrying this call after an
+        ambiguous failure may duplicate its effect.
+- target: $.paths['/postSignUpEvent'].post
+  update:
+    x-idempotency:
+      supported: false
+      note: >-
+        No idempotency key is documented. Retrying this call after an
+        ambiguous failure may duplicate its effect.
+- target: $.paths['/postCustomEvent'].post
+  update:
+    x-idempotency:
+      supported: false
+      note: >-
+        No idempotency key is documented. Retrying this call after an
+        ambiguous failure may duplicate its effect.

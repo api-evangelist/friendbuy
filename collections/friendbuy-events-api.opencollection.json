@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Events API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Track a purchase event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPurchaseEvent",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records a purchase/order conversion so Friendbuy can attribute it to a referral and trigger advocate and friend rewards."
+        },
+        {
+          "info": {
+            "name": "Track a sign-up event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postSignUpEvent",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records an account sign-up conversion so Friendbuy can attribute it to a referral and trigger rewards for sign-up-based campaigns."
+        },
+        {
+          "info": {
+            "name": "Track a custom event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postCustomEvent",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records an arbitrary named custom event used to trigger custom campaigns or advanced attribution rules."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

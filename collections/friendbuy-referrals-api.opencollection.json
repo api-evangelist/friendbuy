@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Referrals API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Referrals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate a personal referral link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPersonalReferralLink",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a unique personal referral link (and code) for an advocate customer in a given campaign, for use in emails or your own UI."
+        },
+        {
+          "info": {
+            "name": "Generate personal referral links in batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postPersonalReferralLinkBatch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates personal referral links for many advocates at once, returning one link per requested customer."
+        },
+        {
+          "info": {
+            "name": "Get referral status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getReferralStatus",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              },
+              {
+                "name": "referralCode",
+                "value": "",
+                "type": "query",
+                "description": "A referral code to look up."
+              }
+            ]
+          },
+          "docs": "Returns the status of referrals associated with a customer or referral code - for example whether a referred friend has converted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,87 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+note: >-
+  Friendbuy publishes no first-party client library in npm, PyPI, RubyGems,
+  Packagist, Maven Central, NuGet, crates.io or pkg.go.dev — searched
+  2026-08-13, all misses. Its only first-party distributed library is the
+  browser Merchant SDK, which is loaded from Friendbuy's own CDN
+  (static.fbot.me) with an UNPINNED URL, plus a per-merchant campaign bundle at
+  campaign.fbot.me/<merchantId>/campaigns.js. Because the CDN URL carries no
+  version segment and no registry metadata endpoint exists, a consumer cannot
+  tell which build they are executing — that is the finding, recorded as
+  `version: null`. Third-party packages (Segment destinations, community PHP
+  wrappers) are listed with `official: false`.
+packages:
+- language: javascript
+  registry: cdn
+  name: friendbuy.js (Merchant SDK)
+  url: https://static.fbot.me/friendbuy.js
+  install: <script src="https://static.fbot.me/friendbuy.js" async></script>
+  official: true
+  version: null
+  published: null
+  note: >-
+    Unpinned CDN distribution — the documented loader points at a floating
+    "latest" URL with no version segment, so there is no version a consumer can
+    assert. The only currency signal the origin exposes is the object's
+    Last-Modified header, 2026-07-27 (checked 2026-08-13), and
+    Cache-Control: max-age=300. No jsDelivr/unpkg mirror exists (not an npm
+    package). Documented at https://developers.friendbuy.com under
+    "Merchant SDK Javascript".
+- language: javascript
+  registry: cdn
+  name: campaigns.js (per-merchant campaign bundle)
+  url: https://campaign.fbot.me/{merchantId}/campaigns.js
+  install: <script src="https://campaign.fbot.me/REPLACE_WITH_YOUR_MERCHANT_ID/campaigns.js" async></script>
+  official: true
+  version: null
+  published: null
+  note: >-
+    Templated, per-merchant bundle emitted by Friendbuy for the campaigns
+    configured in the Retailer App. Not a versioned artifact and not
+    independently fetchable without a merchant ID, so no version or publish
+    date exists to record.
+- language: javascript
+  registry: npm
+  name: '@segment/analytics-browser-actions-friendbuy'
+  url: https://www.npmjs.com/package/@segment/analytics-browser-actions-friendbuy
+  install: npm install @segment/analytics-browser-actions-friendbuy
+  official: false
+  version: 1.106.0
+  published: '2026-07-13'
+  note: >-
+    Segment's first-party Friendbuy destination (Twilio Segment publishes it,
+    not Friendbuy). Actively maintained. Listed here because it is the most
+    current maintained package that speaks the Friendbuy browser contract.
+- language: javascript
+  registry: npm
+  name: '@segment/analytics.js-integration-friendbuy'
+  url: https://www.npmjs.com/package/@segment/analytics.js-integration-friendbuy
+  install: npm install @segment/analytics.js-integration-friendbuy
+  official: false
+  version: 1.0.9
+  published: '2021-07-09'
+  note: Legacy Segment analytics.js integration; superseded by the actions destination above.
+- language: php
+  registry: packagist
+  name: jamesvweston/friendbuy-php
+  url: https://packagist.org/packages/jamesvweston/friendbuy-php
+  install: composer require jamesvweston/friendbuy-php
+  official: false
+  version: null
+  published: null
+  note: >-
+    Community PHP wrapper for the legacy Friendbuy API. Packagist returns no
+    tagged release metadata for it and the backing GitHub repo has not been
+    pushed since 2017-01-19 — an abandoned third-party client, recorded so the
+    absence of a maintained server-side SDK is legible.
+registries_checked:
+- {registry: npm, query: friendbuy, first_party_hits: 0}
+- {registry: pypi, package: friendbuy, status: 404}
+- {registry: rubygems, package: friendbuy, status: 404}
+- {registry: packagist, query: friendbuy, first_party_hits: 0}
+- {registry: crates.io, query: friendbuy, total: 0}
+- {registry: maven-central, query: friendbuy, status: null, note: search.maven.org did not answer within 25s; not checked}
+- {registry: nuget, query: friendbuy, total_hits: 0}
+- {registry: pkg.go.dev, module: github.com/friendbuy/, proxy_status: 404}

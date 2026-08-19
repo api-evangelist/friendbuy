@@ -1,0 +1,647 @@
+{
+  "item": [
+    {
+      "id": "73b2db67-7f3e-4e7a-a951-52c5756da99f",
+      "name": "Referrals",
+      "description": {
+        "content": "Generate personal referral links and check referral status.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1f542900-70be-4888-a2c6-950b26fef028",
+          "name": "Generate a personal referral link",
+          "request": {
+            "name": "Generate a personal referral link",
+            "description": {
+              "content": "Generates a unique personal referral link (and code) for an advocate customer in a given campaign, for use in emails or your own UI.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "postPersonalReferralLink"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"<string>\",\n  \"campaignId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3d0e4468-3272-4e77-8556-77015471c5ca",
+              "name": "The generated referral link.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLink"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<string>\",\n  \"campaignId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerId\": \"string\",\n  \"campaignId\": \"string\",\n  \"link\": \"http://HelqsAmZkNVjCL.upSopxkBPz6\",\n  \"referralCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7cbf502-d6f9-48ec-a8b2-4f6f06d1e68a",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLink"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<string>\",\n  \"campaignId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13c736f5-0618-4b48-99ce-129b6c18d9f4",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLink"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<string>\",\n  \"campaignId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60cb7d64-002a-4727-a23c-548e69a6c394",
+          "name": "Generate personal referral links in batch",
+          "request": {
+            "name": "Generate personal referral links in batch",
+            "description": {
+              "content": "Generates personal referral links for many advocates at once, returning one link per requested customer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "postPersonalReferralLinkBatch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requests\": [\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    },\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "01b46240-1426-4d4a-b11e-88c94ae1802b",
+              "name": "The generated referral links.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLinkBatch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requests\": [\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    },\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"customerId\": \"string\",\n      \"campaignId\": \"string\",\n      \"link\": \"https://JdDPVScdBjPhszjD.gidF+dbqLEH2mg+Gfo0wJj,Bt3rcOm8t+lzF1yuUl\",\n      \"referralCode\": \"string\"\n    },\n    {\n      \"customerId\": \"string\",\n      \"campaignId\": \"string\",\n      \"link\": \"http://uLwPelcqxNUTU.zjV2xijkgoXQwZVRoS+OMzxaepc7PowgetpOUa\",\n      \"referralCode\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d1bd442-0b09-4199-8b35-6abbe1413f19",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLinkBatch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requests\": [\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    },\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "493bc544-71a5-4b95-9cbe-b2dc0abee64f",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPersonalReferralLinkBatch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requests\": [\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    },\n    {\n      \"customerId\": \"<string>\",\n      \"campaignId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3944fa8-14b8-419c-af77-49c0ed2e9ecc",
+          "name": "Get referral status",
+          "request": {
+            "name": "Get referral status",
+            "description": {
+              "content": "Returns the status of referrals associated with a customer or referral code - for example whether a referred friend has converted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "getReferralStatus"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "customerId",
+                  "value": "<string>",
+                  "description": "Your identifier for the customer."
+                },
+                {
+                  "disabled": false,
+                  "key": "referralCode",
+                  "value": "<string>",
+                  "description": "A referral code to look up."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1248ca55-729d-4e86-ac0e-6888e9f314ad",
+              "name": "The referral status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "getReferralStatus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customerId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "referralCode",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d3d7b085-c74e-464f-9d02-1b6d5cac6420",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "getReferralStatus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customerId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "referralCode",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d3a217bd-f68e-49ad-a536-9c9c59431846",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "getReferralStatus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customerId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "referralCode",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://mapi.fbot.me/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c236d89c-e9fe-48b8-9f12-7f545aa044f2",
+    "name": "Friendbuy Merchant Analytics Referrals API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy's referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy's Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.\nEndpoint paths in this document are grounded in Friendbuy's public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.\n\nContact Support:\n Name: Friendbuy",
+      "type": "text/plain"
+    }
+  }
+}

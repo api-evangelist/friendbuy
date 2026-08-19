@@ -1,0 +1,644 @@
+{
+  "item": [
+    {
+      "id": "e9763418-860c-480b-ac52-b28e18b7ad96",
+      "name": "Events",
+      "description": {
+        "content": "Track purchase, sign-up, and custom conversion events.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f448c84c-ba1b-4f6b-a49d-912db8165e87",
+          "name": "Track a purchase event",
+          "request": {
+            "name": "Track a purchase event",
+            "description": {
+              "content": "Records a purchase/order conversion so Friendbuy can attribute it to a referral and trigger advocate and friend rewards.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "postPurchaseEvent"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"couponCode\": \"<string>\",\n  \"products\": [\n    {\n      \"key_0\": 6861.87002798424\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ec792fea-2317-4e5c-a932-8d594ef5faa5",
+              "name": "The recorded purchase event.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPurchaseEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"couponCode\": \"<string>\",\n  \"products\": [\n    {\n      \"key_0\": 6028.895011340184,\n      \"key_1\": true\n    },\n    {\n      \"key_0\": 2935,\n      \"key_1\": 4632.597961227808\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"eventId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f96b09be-06a0-49a6-8c42-ce031e333da1",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPurchaseEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"couponCode\": \"<string>\",\n  \"products\": [\n    {\n      \"key_0\": 6028.895011340184,\n      \"key_1\": true\n    },\n    {\n      \"key_0\": 2935,\n      \"key_1\": 4632.597961227808\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60abb639-1ca8-471d-9b12-208bffeb7a27",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postPurchaseEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"currency\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"couponCode\": \"<string>\",\n  \"products\": [\n    {\n      \"key_0\": 6028.895011340184,\n      \"key_1\": true\n    },\n    {\n      \"key_0\": 2935,\n      \"key_1\": 4632.597961227808\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d5a92d7-9379-45b6-8987-7c882c9c8e92",
+          "name": "Track a sign-up event",
+          "request": {
+            "name": "Track a sign-up event",
+            "description": {
+              "content": "Records an account sign-up conversion so Friendbuy can attribute it to a referral and trigger rewards for sign-up-based campaigns.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "postSignUpEvent"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"id\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e840ee8f-4624-4efa-83b0-9727b0527f2c",
+              "name": "The recorded sign-up event.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postSignUpEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"id\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"eventId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5ad37ab-4057-4acc-b4ab-565dd795d31d",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postSignUpEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"id\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79986ead-0a2b-4833-bda1-16fea4c4614e",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postSignUpEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"id\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a079cca-5622-4ddd-94dd-edf361d37d6e",
+          "name": "Track a custom event",
+          "request": {
+            "name": "Track a custom event",
+            "description": {
+              "content": "Records an arbitrary named custom event used to trigger custom campaigns or advanced attribution rules.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "postCustomEvent"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventName\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"properties\": {\n    \"key_0\": 6307.960729822414,\n    \"key_1\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7ec024c2-f325-4a20-976f-b905fd09062e",
+              "name": "The recorded custom event.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postCustomEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eventName\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"properties\": {\n    \"key_0\": 8304\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"eventId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bc87fe2-3030-4ea5-ab90-ec0ab7cbf33a",
+              "name": "Missing or invalid Bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postCustomEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eventName\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"properties\": {\n    \"key_0\": 8304\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2357aea3-3d9c-42dc-904d-a164cb01ec78",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "postCustomEvent"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eventName\": \"<string>\",\n  \"customer\": {\n    \"id\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"isNewCustomer\": \"<boolean>\"\n  },\n  \"properties\": {\n    \"key_0\": 8304\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://mapi.fbot.me/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "447abe30-4c9d-4e8f-8c2e-81ddc9e9c640",
+    "name": "Friendbuy Merchant Analytics Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy's referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy's Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.\nEndpoint paths in this document are grounded in Friendbuy's public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.\n\nContact Support:\n Name: Friendbuy",
+      "type": "text/plain"
+    }
+  }
+}

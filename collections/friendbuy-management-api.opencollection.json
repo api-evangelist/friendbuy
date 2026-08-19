@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Management API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Block users from campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postBlockUsers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Blocks one or more users (by email or customer id) from participating in referral or loyalty campaigns, for fraud prevention."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

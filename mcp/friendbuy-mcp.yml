@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/ (7 refined Friendbuy Merchant API specs in this repo)
+note: >-
+  Friendbuy ships NO MCP server. Searched 2026-08-13: the developer docs
+  (developers.friendbuy.com), the friendbuy.com site and sitemap, the friendbuy
+  GitHub org (4 public repos, none MCP-related), and npm carry no Model Context
+  Protocol server, and mcp.friendbuy.com does not resolve while
+  friendbuy.com/mcp, mapi.fbot.me/mcp and mcp.fbot.me all miss. The tools below
+  are a CANDIDATE surface derived one-to-one from the operationIds in this
+  repo's OpenAPI files — they are what an MCP server over the Friendbuy
+  Merchant API would expose, not something Friendbuy publishes. No endpoint URL
+  is asserted because none exists.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    auth reflects how the underlying Merchant API authenticates (account
+    key/secret exchanged at POST /authorization for a short-lived Bearer JWT),
+    not an MCP transport that exists.
+probes:
+- {url: 'https://mcp.friendbuy.com', status: 0, result: DNS does not resolve}
+- {url: 'https://friendbuy.com/mcp', status: 404}
+- {url: 'https://mapi.fbot.me/mcp', status: 404}
+- {url: 'https://mcp.fbot.me', status: 404}
+server:
+  name: friendbuy
+  transport: null
+  url: null
+tools:
+- name: create_authorization
+  description: Exchange an account key and secret for a short-lived Bearer JWT.
+  source_operation: openapi/friendbuy-authorization-api-openapi.yml#createAuthorization
+- name: create_customer
+  description: Create or update a customer record in Friendbuy.
+  source_operation: openapi/friendbuy-customers-api-openapi.yml#postCustomer
+- name: get_customer
+  description: Retrieve a customer record.
+  source_operation: openapi/friendbuy-customers-api-openapi.yml#getCustomer
+- name: get_member_tier_customer
+  description: Retrieve a customer's loyalty member tier.
+  source_operation: openapi/friendbuy-customers-api-openapi.yml#getMemberTierCustomer
+- name: get_user_data
+  description: Retrieve a user's data for a CCPA/GDPR subject access request.
+  source_operation: openapi/friendbuy-customers-api-openapi.yml#getUserData
+- name: delete_user_data
+  description: Delete a user's data for a CCPA/GDPR erasure request.
+  source_operation: openapi/friendbuy-customers-api-openapi.yml#deleteUserData
+- name: create_personal_referral_link
+  description: Generate a personal referral link for a customer.
+  source_operation: openapi/friendbuy-referrals-api-openapi.yml#postPersonalReferralLink
+- name: create_personal_referral_link_batch
+  description: Generate personal referral links for many customers in one call.
+  source_operation: openapi/friendbuy-referrals-api-openapi.yml#postPersonalReferralLinkBatch
+- name: get_referral_status
+  description: Check whether a referral code is active or blocked.
+  source_operation: openapi/friendbuy-referrals-api-openapi.yml#getReferralStatus
+- name: track_purchase_event
+  description: Track a purchase conversion event.
+  source_operation: openapi/friendbuy-events-api-openapi.yml#postPurchaseEvent
+- name: track_signup_event
+  description: Track a sign-up conversion event.
+  source_operation: openapi/friendbuy-events-api-openapi.yml#postSignUpEvent
+- name: track_custom_event
+  description: Track a custom conversion event.
+  source_operation: openapi/friendbuy-events-api-openapi.yml#postCustomEvent
+- name: block_users
+  description: Add users to a campaign block list.
+  source_operation: openapi/friendbuy-management-api-openapi.yml#postBlockUsers
+- name: get_widget_views
+  description: Read widget-view analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getWidgetViews
+- name: get_shares
+  description: Read share analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getShares
+- name: get_clicks
+  description: Read referral click analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getClicks
+- name: get_account_sign_ups
+  description: Read sign-up analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getAccountSignUps
+- name: get_purchases_analytics
+  description: Read purchase analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getPurchasesAnalytics
+- name: get_distributed_advocate_rewards
+  description: Read advocate rewards distributed in a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getDistributedAdvocateRewards
+- name: get_distributed_friend_incentives
+  description: Read friend incentives distributed in a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getDistributedFriendIncentives
+- name: get_referral_rewards
+  description: Read referral reward analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getReferralRewards
+- name: get_email_captures
+  description: Read email-capture analytics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getEmailCaptures
+- name: get_email_metrics
+  description: Read email delivery/engagement metrics for a date range.
+  source_operation: openapi/friendbuy-analytics-api-openapi.yml#getEmailMetrics
+- name: get_ledger_heads
+  description: Read loyalty ledger head balances by currency.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getLedgerHeads
+- name: get_ledger_balance
+  description: Read a customer's loyalty ledger balance.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getLedgerBalance
+- name: get_ledger_balance_custom
+  description: Read a loyalty ledger balance by custom customer id.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getLedgerBalanceCustom
+- name: create_ledger_adjustment
+  description: Credit or debit a customer's loyalty ledger.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#postLedgerAdjustment
+- name: create_ledger_adjustment_custom
+  description: Credit or debit a loyalty ledger by custom customer id.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#postLedgerAdjustmentCustom
+- name: get_redemption_options
+  description: List the loyalty redemption options configured for the account.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getRedemptionOptions
+- name: redeem_reward
+  description: Redeem loyalty currency for a reward.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#redeemReward
+- name: get_coupons
+  description: List coupons issued to a customer.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getCoupons

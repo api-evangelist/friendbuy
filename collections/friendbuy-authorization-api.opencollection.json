@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Authorization API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authorization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Obtain a Bearer token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/authorization",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchanges an account key and secret (from the Friendbuy Developer Center) for a short-lived Bearer JWT used to authorize all other Merchant API calls."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

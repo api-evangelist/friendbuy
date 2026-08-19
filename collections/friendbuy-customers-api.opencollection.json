@@ -1,0 +1,133 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics Customers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mapi.fbot.me/v1/postCustomer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a Friendbuy customer record, keyed by your customer id and email. Used to sync your customer base so referrals and loyalty can be attributed."
+        },
+        {
+          "info": {
+            "name": "Retrieve a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getCustomer",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "The customer's email address."
+              }
+            ]
+          },
+          "docs": "Retrieves a customer record by customer id or email."
+        },
+        {
+          "info": {
+            "name": "Retrieve a customer's loyalty member tier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getMemberTierCustomer",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              }
+            ]
+          },
+          "docs": "Returns the loyalty program tier a customer currently belongs to."
+        },
+        {
+          "info": {
+            "name": "Request a customer's stored data (GDPR/CCPA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/getUserData",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "The customer's email address."
+              }
+            ]
+          },
+          "docs": "Returns the personal data Friendbuy stores for a customer, in support of GDPR/CCPA data-access requests."
+        },
+        {
+          "info": {
+            "name": "Delete a customer's stored data (GDPR/CCPA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://mapi.fbot.me/v1/deleteUserData",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Your identifier for the customer."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "The customer's email address."
+              }
+            ]
+          },
+          "docs": "Deletes the personal data Friendbuy stores for a customer, in support of GDPR/CCPA erasure requests."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

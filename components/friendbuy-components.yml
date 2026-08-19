@@ -1,0 +1,75 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+note: >-
+  Friendbuy's primary integration surface for most merchants is not the Merchant
+  API but a client-side widget layer loaded by the Merchant SDK. Captured here
+  from the developer documentation. These are embeddable/hosted surfaces, not
+  server-side SDKs — the loader libraries themselves are catalogued in
+  packages/friendbuy-packages.yml.
+loaders:
+- name: Merchant SDK
+  url: https://static.fbot.me/friendbuy.js
+  type: script
+  async: true
+  global: window.friendbuyAPI
+  note: >-
+    The only reserved global is `friendbuyAPI`; the library and its dependencies
+    are encapsulated and reachable only through controlled
+    `window.friendbuyAPI.push([...])` gateway calls. Designed to load
+    asynchronously so a Friendbuy outage cannot block the host page, and
+    documented as SPA-compatible.
+- name: Campaign bundle
+  url: https://campaign.fbot.me/{merchantId}/campaigns.js
+  type: script
+  async: true
+  note: Per-merchant bundle carrying the campaigns configured in the Retailer App; merchantId comes from https://retailer.fbot.me/settings/general.
+families:
+- name: Tracking calls
+  description: >-
+    Imperative gateway calls pushed onto window.friendbuyAPI that report state
+    and conversions from the host page. All events require a profile, and the
+    SDK postpones events until a profile has been retrieved from Friendbuy's
+    backend.
+  components:
+  - {name: track customer, note: Identify the current visitor as a customer.}
+  - {name: track email, note: Report a captured email address.}
+  - {name: track page, note: 'Name and report page views; the documented mechanism for SPA route changes.'}
+  - {name: track purchase, note: Report a purchase conversion client-side.}
+  - {name: track signup, note: Report a sign-up conversion client-side.}
+  - {name: track custom event, note: Report a merchant-defined conversion event.}
+- name: Widgets
+  description: >-
+    Hosted, no-code campaign surfaces configured in the Retailer App and rendered
+    by the campaign bundle on the merchant's site (overlays, embedded referral
+    widgets, landing surfaces). Display is driven by page names and campaign
+    triggers rather than by merchant markup.
+  components:
+  - {name: campaign widgets, note: Rendered from campaigns.js; triggered by page name and campaign configuration.}
+- name: Event listeners
+  description: Browser events the SDK emits so the host page can react to widget activity.
+  components:
+  - {name: couponReceived, note: Fires when the visitor receives a coupon code.}
+  - {name: emailShareSuccess, note: Fires on a successful email share.}
+  - {name: widgetActionTriggered, note: Fires on a widget interaction.}
+- name: Visitor Status
+  description: >-
+    Client-side payload describing the current visitor's referral/loyalty state,
+    used to personalise the host page. The docs publish a signature-verification
+    procedure for the payload and a "Common Use Cases for Visitor Status"
+    section.
+  components:
+  - {name: visitor status payload, note: Must be signature-verified before being trusted server-side.}
+- name: Customer Authentication
+  description: >-
+    Documented handshake for authenticating the logged-in customer to Friendbuy
+    from the merchant's own session, so widget state binds to a real customer id.
+  components:
+  - {name: customer authentication signature, note: Merchant-signed identity passed to the SDK.}
+admin_surface:
+  name: Retailer App
+  url: https://retailer.fbot.me
+  note: >-
+    Hosted merchant dashboard. Carries the Developer Center (API credentials,
+    Webhooks & Callbacks configuration and the webhook "Test Endpoint" tool) and
+    campaign configuration. Not embeddable.

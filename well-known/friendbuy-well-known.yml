@@ -1,0 +1,63 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every Friendbuy host in apis.yml and OpenAPI servers[]
+note: >-
+  RECORDED ABSENCE — nothing was found. Every /.well-known/ path returned a
+  non-200 on every host, so NO WellKnown and NO SecurityTxt pointer is wired
+  into apis.yml. The three failure shapes differ and are worth distinguishing:
+  the API origin (mapi.fbot.me) answers a clean JSON 404
+  ({"error":"Not Found","message":"Unknown URL ..."}), the developer docs host
+  (developers.friendbuy.com) is a static S3/CloudFront origin that answers 403
+  AccessDenied to any key it does not hold, and the marketing site
+  (friendbuy.com, Webflow) answers 404 with an "Invalid .well-known request"
+  HTML page. None of these is a served document.
+hosts:
+- host: https://mapi.fbot.me
+  role: api
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://developers.friendbuy.com
+  role: documentation
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+- host: https://friendbuy.com
+  role: website
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://www.friendbuy.com
+  role: website
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+summary:
+  paths_probed: 28
+  documents_found: 0
+  security_txt: false
+  api_catalog: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  agent_card: false
+  pointer_emitted: false

@@ -1,0 +1,23 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.friendbuy.com/product-updates
+note: >-
+  Friendbuy publishes a Product Updates page and links it from the site nav as
+  "New Product Releases", but the entry list is injected client-side: the served
+  HTML (66KB, fetched 2026-08-13) contains no dated entries, no item links and
+  no CMS payload, so no structured changelog could be captured. This is an
+  UNREADABLE changelog, not an absent one — the page exists and returns 200.
+  There is no API-specific changelog: the developer docs at
+  developers.friendbuy.com carry no revision history, and
+  friendbuy.com/changelog and friendbuy.com/release-notes both 404.
+scheme: undated-cms-list
+current_version: v1
+current_version_note: The Merchant API base path has been https://mapi.fbot.me/v1 for the whole documented life of the API; no version history is published.
+sources_probed:
+- {url: 'https://www.friendbuy.com/product-updates', status: 200, machine_readable: false, note: entries client-rendered}
+- {url: 'https://friendbuy.com/changelog', status: 404}
+- {url: 'https://friendbuy.com/release-notes', status: 404}
+- {url: 'https://developers.friendbuy.com', status: 200, note: no revision history section in the reference}
+- {url: 'https://github.com/friendbuy/release-notes', status: 200, note: 'Friendbuy Platform Release Notes repo; last pushed 2018-01-10, dormant'}
+entries: []
+entry_count: 0

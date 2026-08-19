@@ -1,0 +1,334 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Friendbuy Merchant Analytics API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Widget views",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/widget-views",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns widget impression/view counts over a date range."
+        },
+        {
+          "info": {
+            "name": "Shares",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/shares",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns share events over a date range."
+        },
+        {
+          "info": {
+            "name": "Clicks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/clicks",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns referral-link click events over a date range."
+        },
+        {
+          "info": {
+            "name": "Account sign-ups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/account-sign-ups",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns sign-up conversions over a date range."
+        },
+        {
+          "info": {
+            "name": "Purchases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/purchases",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns purchase conversions over a date range."
+        },
+        {
+          "info": {
+            "name": "Distributed advocate rewards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/distributed-advocate-rewards",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns advocate rewards distributed over a date range."
+        },
+        {
+          "info": {
+            "name": "Distributed friend incentives",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/distributed-friend-incentives",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns friend incentives distributed over a date range."
+        },
+        {
+          "info": {
+            "name": "Combined referral rewards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/rewards/referral",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns combined advocate and friend referral rewards over a date range."
+        },
+        {
+          "info": {
+            "name": "Email captures",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/email-captures",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns captured email addresses over a date range."
+        },
+        {
+          "info": {
+            "name": "Email metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://mapi.fbot.me/v1/analytics/email-metrics",
+            "params": [
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range (inclusive), ISO 8601."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns aggregate email-performance metrics over a date range."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

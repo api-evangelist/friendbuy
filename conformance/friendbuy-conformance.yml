@@ -1,0 +1,75 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/ + https://developers.friendbuy.com
+note: >-
+  Standards assertions derived from the OpenAPI in this repo and the developer
+  documentation. Friendbuy publishes NO certification or compliance program
+  (no SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim appears on
+  friendbuy.com, its sitemap, its terms or its privacy policy, and there is no
+  trust center at trust.friendbuy.com or /security — all probed 2026-08-13), so
+  NO `Compliance` and NO `TrustCenter` pointer is wired into apis.yml. The one
+  regulatory surface Friendbuy does ship is CCPA/GDPR data-subject tooling as
+  first-class API operations.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in any spec and no OAuth flow in the docs. Auth is a
+    proprietary key/secret exchange returning a bearer JWT.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every host.
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: 'Authorization: Bearer <token> on every operation; securityScheme type http, scheme bearer, bearerFormat JWT.'
+- id: rfc7519-jwt
+  conforms: true
+  evidence: 'POST /authorization returns a JWT (tokenType Bearer) with an explicit expires timestamp.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use a proprietary flat envelope {error,message,code,reference}; no application/problem+json anywhere.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404/403 on all four Friendbuy hosts (see well-known/friendbuy-well-known.yml).
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header support is documented.
+- id: cursor-pagination
+  conforms: true
+  evidence: Opaque `pageToken`/`nextPageToken` cursor across the GET analytics surface, with fromDate/toDate/pageSize folded into the token.
+- id: idempotency
+  conforms: false
+  evidence: No idempotency key or replay window is documented for any write operation.
+- id: hmac-webhook-signing
+  conforms: true
+  evidence: 'Outbound webhooks carry X-Friendbuy-Hmac-SHA256 = base64(HMAC-SHA256(raw body, merchant secret)).'
+- id: gdpr-data-subject-rights
+  conforms: true
+  evidence: >-
+    GET /getUserData (subject access) and DELETE /deleteUserData (erasure) are
+    documented as the CCPA/GDPR request endpoints, with the request grounded on
+    email and/or customer id.
+- id: ccpa
+  conforms: true
+  evidence: Same endpoints; the docs name CCPA explicitly, and friendbuy.com/privacy carries CCPA disclosures.
+- id: asyncapi
+  conforms: false
+  evidence: No AsyncAPI document is published; the event surface is documented prose + JSON examples (captured in asyncapi/friendbuy-webhooks.yml).
+- id: openapi
+  conforms: partial
+  evidence: >-
+    The developer reference is widdershins/Slate-generated (typed parameter
+    tables, "Restrictions" columns, an Apache 2.0 licence line and a
+    Base URLs block), which implies an internal OpenAPI source — but Friendbuy
+    publishes no spec at any probed URL, so consumers cannot obtain it.
+- id: json-schema
+  conforms: false
+  evidence: No JSON Schema documents are published.
+- id: mcp
+  conforms: false
+  evidence: No Model Context Protocol server exists (see mcp/friendbuy-mcp.yml).
+- id: a2a
+  conforms: false
+  evidence: No agent card at /.well-known/agent-card.json or /.well-known/agent.json on any host.
+certifications: []
+compliance_program_published: false

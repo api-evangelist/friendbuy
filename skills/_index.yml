@@ -1,0 +1,28 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  Grounded in the operationIds in this repo's openapi/ files (grepped, not
+  invented) and the runtime semantics captured in conventions/, errors/ and
+  asyncapi/ from https://developers.friendbuy.com. Friendbuy publishes no
+  AGENTS.md or skill files of its own — searched the developer docs and the
+  friendbuy GitHub org on 2026-08-13.
+skills:
+- file: friendbuy-referral-link-and-track-conversion.md
+  name: Mint a Friendbuy referral link and track the conversion it produces
+  api: openapi/friendbuy-referrals-api-openapi.yml
+  operations: [createAuthorization, postCustomer, postPersonalReferralLink, getReferralStatus, postPurchaseEvent]
+- file: friendbuy-loyalty-ledger-and-redeem.md
+  name: Read, adjust and redeem a Friendbuy loyalty ledger
+  api: openapi/friendbuy-rewards-loyalty-api-openapi.yml
+  operations: [createAuthorization, getLedgerHeads, getLedgerBalance, getLedgerBalanceCustom,
+    postLedgerAdjustment, postLedgerAdjustmentCustom, getRedemptionOptions, redeemReward,
+    getCoupons, getMemberTierCustomer]
+- file: friendbuy-consume-webhooks.md
+  name: Receive and verify Friendbuy webhooks and callbacks
+  api: asyncapi/friendbuy-webhooks.yml
+  operations: [advocateReward, friendIncentive, loyaltyReward, emailCapture, emailOptOut,
+    receipt, ledgerTransaction, customerUpdate, emailAuth]
+- file: friendbuy-privacy-data-requests.md
+  name: Service a CCPA/GDPR data request against Friendbuy
+  api: openapi/friendbuy-customers-api-openapi.yml
+  operations: [createAuthorization, getUserData, deleteUserData, getCustomer, postBlockUsers]

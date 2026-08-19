@@ -1,0 +1,78 @@
+# Friendbuy
+
+> Friendbuy is a referral, loyalty and influencer marketing platform for ecommerce and direct-to-consumer brands. Merchants run campaigns from a no-code Retailer App and integrate two ways: a browser Merchant SDK that renders widgets and reports conversions, and the server-to-server Friendbuy Merchant API at https://mapi.fbot.me/v1. The Merchant API syncs customer records, mints personal referral links, tracks purchase / sign-up / custom conversion events, reads campaign and reward analytics, and manages loyalty ledger balances, adjustments, redemptions and coupons. Authentication is an account key/secret exchange at POST /authorization that returns a short-lived Bearer JWT. API access and production credentials are gated behind a paid, contact-sales plan.
+
+GENERATED: this file was produced by API Evangelist from the Friendbuy developer
+documentation and the artifacts in the api-evangelist/friendbuy repository.
+Friendbuy does not publish its own llms.txt (probed 2026-08-13:
+developers.friendbuy.com/llms.txt returns 403, friendbuy.com/llms.txt returns 404).
+
+## APIs
+
+- [Friendbuy Merchant API](https://developers.friendbuy.com): Base https://mapi.fbot.me/v1. Bearer JWT from POST /authorization. Seven capability areas: authorization, customers, referrals, events, analytics, rewards & loyalty, management.
+- [Authorization](https://developers.friendbuy.com): POST /authorization — exchange `key` + `secret` for `{tokenType, token, expires}`. Cache the token until near `expires`.
+- [Customers](https://developers.friendbuy.com): postCustomer, getCustomer, getMemberTierCustomer, getUserData, deleteUserData. `customerId` is the MERCHANT's identifier, not a Friendbuy one.
+- [Referrals](https://developers.friendbuy.com): postPersonalReferralLink, postPersonalReferralLinkBatch (use the batch form for volume), getReferralStatus.
+- [Events](https://developers.friendbuy.com): postPurchaseEvent, postSignUpEvent, postCustomEvent.
+- [Analytics](https://developers.friendbuy.com): getWidgetViews, getShares, getClicks, getAccountSignUps, getPurchasesAnalytics, getDistributedAdvocateRewards, getDistributedFriendIncentives, getReferralRewards, getEmailCaptures, getEmailMetrics. All cursor-paginated.
+- [Rewards & Loyalty](https://developers.friendbuy.com): getLedgerHeads, getLedgerBalance, getLedgerBalanceCustom, postLedgerAdjustment, postLedgerAdjustmentCustom, getRedemptionOptions, redeemReward, getCoupons.
+- [Management](https://developers.friendbuy.com): postBlockUsers — add users to a campaign block list.
+
+## Specs
+
+- [Analytics OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-analytics-api-openapi.yml)
+- [Authorization OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-authorization-api-openapi.yml)
+- [Customers OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-customers-api-openapi.yml)
+- [Events OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-events-api-openapi.yml)
+- [Management OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-management-api-openapi.yml)
+- [Referrals OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-referrals-api-openapi.yml)
+- [Rewards & Loyalty OpenAPI](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/openapi/friendbuy-rewards-loyalty-api-openapi.yml)
+- [Postman collection](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/collections/friendbuy.postman_collection.json)
+
+Note: Friendbuy publishes no machine-readable specification of its own. The
+OpenAPI above is API Evangelist's model of the documented surface — paths,
+operationIds and response codes are grounded in developers.friendbuy.com;
+field-level schemas should be reconciled against the live reference before
+production use.
+
+## Runtime semantics
+
+- [Conventions](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/conventions/friendbuy-conventions.yml): auth, pagination, error envelope, versioning, timezone handling.
+- [Errors](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/errors/friendbuy-problem-types.yml): flat `{error, message, code, reference}` envelope; 400/401/404/422/429/500. Not RFC 9457.
+- [Authentication](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/authentication/friendbuy-authentication.yml)
+- [Rate limits](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/rate-limits/friendbuy-rate-limits.yml): none published; 429 exists but carries no documented header contract.
+- [Webhooks](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/asyncapi/friendbuy-webhooks.yml): advocateReward, friendIncentive, loyaltyReward, emailCapture, emailOptOut, receipt, ledgerTransaction, customerUpdate, plus Reward Validation and Email Recipient Authorization callbacks. HMAC-SHA256 signed via X-Friendbuy-Hmac-SHA256.
+- [Data model](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/data-model/friendbuy-data-model.yml)
+- [Lifecycle](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/lifecycle/friendbuy-lifecycle.yml): v1 in the URI path; status page at https://friendbuy.statuspage.io; no deprecation policy.
+
+## Things an agent must know
+
+- There is NO idempotency contract. Do not blind-retry a write (postPurchaseEvent, postLedgerAdjustment, redeemReward) — a retry can double-count a conversion or double-credit a ledger.
+- Pagination is an opaque cursor: send `fromDate`+`toDate` (+ optional `pageSize`) on the first call, then send `nextPageToken` back as `pageToken`. When a token is supplied, the dates and page size come FROM the token — do not resend them.
+- A 404 from getLedgerBalance means the customer has no ledger yet. Treat it as a zero balance, not a failure.
+- A 422 will fail identically on retry. Fix the field named in `message`.
+- Credentials are issued by Friendbuy, not self-serve. There is no sandbox, no test mode and no test key prefix.
+- The Merchant API is RPC-flavoured on writes (POST /postCustomer, POST /postPurchaseEvent) and resource-oriented on reads (GET /analytics/*). Do not infer semantics from the path shape.
+
+## Agent skills
+
+- [Skill index](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/skills/_index.yml)
+
+## Docs
+
+- [Developer documentation](https://developers.friendbuy.com)
+- [Help center](https://support.friendbuy.com)
+- [Product updates](https://www.friendbuy.com/product-updates)
+- [Status](https://friendbuy.statuspage.io)
+- [Retailer App](https://retailer.fbot.me): merchant dashboard; the Developer Center tab issues API credentials and configures Webhooks & Callbacks.
+- [Website](https://friendbuy.com)
+- [Blog](https://friendbuy.com/blog)
+- [Terms of service](https://friendbuy.com/terms-of-service)
+- [Privacy policy](https://friendbuy.com/privacy)
+
+## Not available
+
+- No MCP server. No A2A agent card. No GraphQL. No gRPC. No AsyncAPI document.
+- No /.well-known/ documents on any Friendbuy host (security.txt, api-catalog, openid-configuration, agent-card.json all miss).
+- No first-party server-side SDK in any package registry. The only first-party library is the browser Merchant SDK at https://static.fbot.me/friendbuy.js, distributed unpinned from Friendbuy's CDN.
+- No public pricing page (friendbuy.com/pricing serves the homepage), no self-serve sign-up, no sandbox.

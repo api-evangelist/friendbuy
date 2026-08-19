@@ -1,0 +1,80 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+derived_from: openapi/ (7 refined Friendbuy Merchant API specs in this repo)
+format: proprietary-json
+rfc9457: false
+note: >-
+  Friendbuy does not use RFC 9457 problem+json. Every documented operation
+  returns the same flat JSON error envelope, and the status set below is the
+  union of the per-operation "Response Codes" tables in the developer reference
+  plus the 4xx responses declared in this repo's OpenAPI. Titles and meanings
+  are quoted from the docs; nothing here is invented.
+envelope:
+  content_type: application/json
+  properties:
+  - {name: error, type: string, required: false, description: The error name.}
+  - {name: message, type: string, required: false, description: The error details.}
+  - {name: code, type: number, required: false, description: The status code of the error.}
+  - {name: reference, type: string, required: false, description: Reference identifier for the failure; quote it to Friendbuy support.}
+  observed_example: >-
+    {"error":"Not Found","message":"Unknown URL /openapi.json","code":0,"reference":""}
+    — observed live on https://mapi.fbot.me on 2026-08-13 for an unrouted path,
+    confirming the envelope is what the origin actually emits.
+problems:
+- status: 400
+  title: Bad Request
+  description: >-
+    The request was rejected. On getReferralStatus the docs state this means the
+    code or advocate are blocked, or the code is otherwise invalid.
+  source_operation: openapi/friendbuy-referrals-api-openapi.yml#getReferralStatus
+  remediation: Validate the referral code and check the campaign block list (postBlockUsers) before retrying.
+- status: 401
+  title: Unauthorized
+  description: >-
+    Missing, malformed or expired Bearer token. Declared on every operation in
+    every spec in this repo.
+  source_operation: all operations
+  remediation: Re-run POST /authorization with the account key and secret and retry with the fresh token; cache until near `expires`.
+- status: 404
+  title: Not Found
+  description: >-
+    The addressed resource does not exist. The docs note the ledger reads return
+    404 "when a user does not have a ledger" — an expected, non-exceptional
+    outcome for a customer who has never earned loyalty currency.
+  source_operation: openapi/friendbuy-rewards-loyalty-api-openapi.yml#getLedgerBalance
+  also_on: [getCustomer, getMemberTierCustomer, getUserData, deleteUserData, getLedgerBalanceCustom, getReferralStatus]
+  remediation: Treat a ledger 404 as a zero balance rather than an error; for customer lookups, create the customer with postCustomer first.
+- status: 422
+  title: Unprocessable Entity
+  description: The payload parsed but failed validation. Declared on every write operation.
+  source_operation: openapi/friendbuy-events-api-openapi.yml#postPurchaseEvent
+  also_on: [postSignUpEvent, postCustomEvent, postCustomer, postPersonalReferralLink, postPersonalReferralLinkBatch,
+    postBlockUsers, postLedgerAdjustment, postLedgerAdjustmentCustom, redeemReward]
+  remediation: Do not blind-retry — the request will fail identically. Correct the field named in `message`.
+- status: 429
+  title: Too Many Requests
+  description: >-
+    Throttled. Present in the response-code table of every documented operation,
+    but Friendbuy publishes no numeric limit, no window and no RateLimit-* or
+    Retry-After header contract.
+  source_operation: https://developers.friendbuy.com
+  remediation: Back off exponentially with jitter; prefer postPersonalReferralLinkBatch and pageToken paging to reduce call volume.
+- status: 500
+  title: Internal Server Error
+  description: Internal Server Error (uncontrolled failure).
+  source_operation: https://developers.friendbuy.com
+  remediation: Retry with backoff; quote the `reference` value to Friendbuy support if it persists.
+webhook_side_errors:
+  note: >-
+    The merchant is the server for Friendbuy's outbound webhooks, and the status
+    code the merchant returns is contractual — see
+    asyncapi/friendbuy-webhooks.yml.
+  contract:
+  - {status: 200, meaning: Delivery accepted; no retry.}
+  - {status: non-200, meaning: 'Retried every 15 minutes for up to 24 hours.'}
+  - {status: 504, meaning: 'Reported by the Retailer App test tool when the merchant endpoint did not respond within the 10 second timeout.'}
+  reward_validation_callback:
+  - {status: 200, meaning: Reward validated and fulfilled.}
+  - {status: 400, meaning: Reward invalidated and not fulfilled.}
+  - {status: other, meaning: 'Error; retried every 15 minutes for up to 72 hours, then the reward is rejected.'}

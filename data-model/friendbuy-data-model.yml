@@ -1,0 +1,115 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/ (7 refined Friendbuy Merchant API specs) + https://developers.friendbuy.com
+note: >-
+  Entity graph derived from the OpenAPI schemas and id-reference fields in this
+  repo, enriched with the entity names and identifier fields that appear in the
+  documented webhook payloads (asyncapi/friendbuy-webhooks.yml). Friendbuy
+  publishes no object reference and no id-prefix scheme — identifiers are opaque
+  UUIDs (campaigns, rewards, events, member tiers, transactions) or
+  merchant-supplied strings (customerId), and that distinction is the single most
+  important thing for an integrator to get right: `customerId` is YOUR id, not
+  Friendbuy's.
+identifiers:
+  style: mixed
+  friendbuy_issued: {format: uuid-v4, examples_seen: [campaign.id, rewardId, eventId, attributionId, transactionId, memberTierId, merchantId, receiptId]}
+  merchant_supplied: {fields: [customerId, id (purchase/order id), customCustomerId], note: 'The merchant''s own identifier is the join key across the whole platform; customCustomerId variants exist so an email or alternate key can be used instead.'}
+  prefixes: none
+entities:
+- name: Customer
+  description: A person in the merchant's system, synced to Friendbuy. The hub of the entire model.
+  schema: openapi/friendbuy-customers-api-openapi.yml#/components/schemas/Customer
+  key: id (merchant-supplied)
+  fields: [id, email, firstName, lastName, isNewCustomer, createdOn]
+  operations: [postCustomer, getCustomer, getUserData, deleteUserData]
+- name: MemberTier
+  description: The loyalty tier a customer currently occupies (e.g. Gold), with a precedence ordering.
+  key: memberTierId (uuid)
+  fields: [memberTierId, memberTierNameCached, memberTierPrecedenceCached, memberTierUpdatedOn]
+  operations: [getMemberTierCustomer]
+  source: webhook customerUpdate payload + getMemberTierCustomer
+- name: Campaign
+  description: A configured referral, loyalty or influencer program. Created in the Retailer App, not via the API.
+  key: campaignId (uuid)
+  fields: [id, name]
+  operations: []
+  note: Read-only from the API's point of view — campaignId is an INPUT to referral-link generation and a dimension on analytics, never a managed resource.
+- name: ReferralLink
+  description: A personal referral URL and code minted for one customer on one campaign.
+  schema: openapi/friendbuy-referrals-api-openapi.yml#/components/schemas/ReferralLink
+  key: referralCode
+  fields: [customerId, campaignId, link, referralCode]
+  operations: [postPersonalReferralLink, postPersonalReferralLinkBatch, getReferralStatus]
+- name: ReferralCode
+  description: The code itself, carrying a status of "active" or "blocked" (i.e. on the block list).
+  key: code
+  fields: [code, status]
+  operations: [getReferralStatus, postBlockUsers]
+- name: Event
+  description: A conversion reported to Friendbuy — purchase, sign-up or custom.
+  schema: openapi/friendbuy-events-api-openapi.yml#/components/schemas/PurchaseEvent
+  key: eventId (Friendbuy-issued, returned in EventResult)
+  fields: ['id (merchant order id)', amount, currency, couponCode, 'products[]', eventName, properties]
+  operations: [postPurchaseEvent, postSignUpEvent, postCustomEvent]
+- name: Attribution
+  description: The link between a friend's conversion and the advocate/share that produced it.
+  key: attributionId (uuid)
+  operations: []
+  note: 'Surfaced in the emailCapture webhook and in the docs section "Decoding the Attribution ID"; not addressable as a REST resource.'
+- name: Reward
+  description: A fulfilled incentive — advocate reward, friend incentive or loyalty reward.
+  key: rewardId (uuid)
+  fields: [rewardId, rewardType, rewardUnit, rewardAmount, rewardTrigger, couponCode, rewardInfo, createdOn]
+  operations: [getDistributedAdvocateRewards, getDistributedFriendIncentives, getReferralRewards]
+  note: Rewards are OBSERVED through analytics reads and webhooks; there is no create-reward operation.
+- name: Coupon
+  description: A discount code issued to a customer as a reward or incentive.
+  key: couponCode
+  operations: [getCoupons]
+- name: Ledger
+  description: A per-customer, per-currency loyalty balance (points or a currency such as USD).
+  schema: openapi/friendbuy-rewards-loyalty-api-openapi.yml#/components/schemas/LedgerBalance
+  key: (customerId, currency)
+  fields: [customerId, balance, currency]
+  operations: [getLedgerBalance, getLedgerBalanceCustom, getLedgerHeads]
+  note: A 404 from a ledger read means the customer has no ledger yet — treat as zero, not as an error.
+- name: LedgerTransaction
+  description: A single credit or debit against a ledger, with the resulting balance.
+  key: transactionId (uuid)
+  fields: [transactionId, customerId, ledgerCurrency, value, ledgerBalance, sourceName, note, createdOn]
+  operations: [postLedgerAdjustment, postLedgerAdjustmentCustom]
+  events: [ledgerTransaction]
+- name: RedemptionOption
+  description: A configured way to spend loyalty currency.
+  key: redemptionOptionId
+  operations: [getRedemptionOptions, redeemReward]
+- name: Receipt
+  description: A customer-submitted receipt processed by receipt scanning, with parsed store and line items.
+  key: receiptId
+  fields: [receiptId, status, storeName, storeId, storeAddress, storeCity, storeState, storeCountry, purchaseDate, submissionDate, subtotal, total, currency, 'products[]']
+  operations: []
+  events: [receipt]
+  note: Documented as "GET Receipts" (/analytics/receipts) in the developer reference but absent from the OpenAPI in this repo — see lifecycle/friendbuy-lifecycle.yml surface_drift.
+- name: EmailCapture
+  description: An email address captured through a widget or share flow, with campaign and advocate context.
+  key: eventId
+  operations: [getEmailCaptures, getEmailMetrics]
+  events: [emailCapture, emailOptOut]
+relationships:
+- {from: Customer, to: ReferralLink, type: has_many, via: customerId}
+- {from: ReferralLink, to: Campaign, type: belongs_to, via: campaignId}
+- {from: ReferralLink, to: ReferralCode, type: has_one, via: referralCode}
+- {from: Customer, to: Event, type: has_many, via: customer (CustomerInput $ref)}
+- {from: Event, to: Attribution, type: has_one, via: attributionId}
+- {from: Attribution, to: Customer, type: belongs_to, via: advocate.customerId, note: the advocate side of the referral}
+- {from: Event, to: Reward, type: has_many, via: conversion evaluation}
+- {from: Reward, to: Customer, type: belongs_to, via: customerId}
+- {from: Reward, to: Coupon, type: has_one, via: couponCode}
+- {from: Customer, to: Ledger, type: has_many, via: customerId, note: one ledger per loyalty currency}
+- {from: Ledger, to: LedgerTransaction, type: has_many, via: customerId + ledgerCurrency}
+- {from: LedgerTransaction, to: RedemptionOption, type: belongs_to, via: redemptionOptionId, note: only for redemption-sourced debits}
+- {from: Customer, to: MemberTier, type: has_one, via: memberTierId}
+- {from: Customer, to: Receipt, type: has_many, via: customerId}
+- {from: Campaign, to: EmailCapture, type: has_many, via: campaign.id}
+- {from: Campaign, to: ReferralCode, type: has_many, via: campaign block list (postBlockUsers)}
+render: null

@@ -4,8 +4,27 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Friendbuy
 providerId: friendbuy
 created: '2026-07-10'
-modified: '2026-07-10'
+modified: '2026-08-13'
 reconciled: false
+generated: '2026-08-13'
+method: searched
+source: https://www.friendbuy.com/book-a-meeting
+plan_count: 3
+plans_published_by_provider: false
+pricing_page:
+  url: https://friendbuy.com/pricing
+  http_status: 200
+  serves: the friendbuy.com homepage
+  note: >-
+    SOFT 200, NOT A PRICING PAGE. Probed 2026-08-13: https://friendbuy.com/pricing
+    returns HTTP 200 but the body is the Webflow homepage (page title "Friendbuy |
+    Best Referral Programs and Loyalty Programs", same data-wf-page id as /), and
+    /pricing does not appear in https://friendbuy.com/sitemap.xml. Friendbuy
+    publishes NO pricing page of its own — the commercial path is
+    /book-a-meeting, /referral-consultation and /loyalty-consultation. The tiers
+    below are therefore THIRD-PARTY REPORTED figures (G2, GetApp), not provider
+    -published prices, and every entry is marked as such. They must not be quoted
+    as Friendbuy's published pricing.
 tags:
 - Referral Marketing
 - Loyalty

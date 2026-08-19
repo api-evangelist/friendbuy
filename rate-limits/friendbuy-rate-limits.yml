@@ -4,8 +4,26 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Friendbuy
 providerId: friendbuy
 created: '2026-07-10'
-modified: '2026-07-10'
+modified: '2026-08-13'
 reconciled: false
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+limit_count: 0
+responseHeaders:
+  documented: false
+  rate_limit_headers: none
+  retry_after: not documented
+  note: >-
+    Re-checked 2026-08-13 against the full Friendbuy developer documentation:
+    the strings "rate limit", "requests per", "throttle" and "quota" do not
+    appear anywhere, and no RateLimit-*, X-RateLimit-* or Retry-After header is
+    specified. What IS published is that 429 Too Many Requests appears in the
+    Response Codes table of EVERY documented operation — so throttling exists
+    and is enforced, but a consumer is given no number to plan against and no
+    runtime signal to back off from. limit_count is 0 because zero numeric
+    limits are published, not because none are enforced. The 429 status is the
+    only observable signal; clients must infer the limit by hitting it.
 tags:
 - Referral Marketing
 - Loyalty

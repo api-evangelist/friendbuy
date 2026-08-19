@@ -1,0 +1,117 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.friendbuy.com
+derived_from:
+- openapi/friendbuy-analytics-api-openapi.yml
+- openapi/friendbuy-authorization-api-openapi.yml
+- openapi/friendbuy-customers-api-openapi.yml
+- openapi/friendbuy-events-api-openapi.yml
+- openapi/friendbuy-management-api-openapi.yml
+- openapi/friendbuy-referrals-api-openapi.yml
+- openapi/friendbuy-rewards-loyalty-api-openapi.yml
+note: >-
+  Cross-cutting runtime semantics for the Friendbuy Merchant API, read from the
+  developer documentation at developers.friendbuy.com and reconciled against the
+  OpenAPI in this repo. Absences below are real and were checked, not skipped:
+  Friendbuy documents NO idempotency contract, NO published rate limits, NO
+  sandbox/test mode and NO deprecation policy.
+base_url: https://mapi.fbot.me/v1
+authentication:
+  style: bearer-jwt-after-key-exchange
+  header: 'Authorization: Bearer <token>'
+  bootstrap:
+    operation: POST /authorization
+    request: '{"key": "<account key>", "secret": "<account secret>"}'
+    response: '{"tokenType": "Bearer", "token": "<jwt>", "expires": "<ISO 8601>"}'
+    credential_issuance: Account key and secret are issued by Friendbuy support / the Developer Center in the Retailer App; there is no self-serve API credential.
+  token_lifetime: short-lived; the authorization response carries an explicit `expires` timestamp
+  guidance: Cache the token until near `expires` and re-authorize, rather than calling /authorization per request.
+  artifact: authentication/friendbuy-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Friendbuy documents no idempotency key, no request-replay window and no
+    idempotent-retry semantics for its write operations
+    (postPurchaseEvent, postSignUpEvent, postCustomEvent, postCustomer,
+    postLedgerAdjustment, redeemReward). Checked against the full developer
+    documentation on 2026-08-13 — the string "idempoten" does not appear. The
+    inverse direction IS specified: Friendbuy's OUTBOUND webhooks retry every 15
+    minutes for up to 24 hours, so MERCHANT endpoints must be idempotent, and
+    the `data` array may redeliver events. No Idempotency pointer is wired into
+    apis.yml because the provider does not support it.
+pagination:
+  style: opaque-cursor
+  applies_to: GET endpoints (analytics reads), unless otherwise stated
+  request_params:
+  - {name: fromDate, in: query, type: ISO 8601 date-time, note: 'Required unless a pageToken is supplied. Example: 2021-02-23T01:20:14Z'}
+  - {name: toDate, in: query, type: ISO 8601 date-time, note: Required unless a pageToken is supplied.}
+  - {name: pageSize, in: query, type: integer, note: Optional page-size limit on the first request.}
+  - {name: pageToken, in: query, type: opaque base64 cursor, note: 'When supplied, toDate, fromDate and pageSize are DERIVED FROM THE TOKEN and must not be re-sent independently.'}
+  response_fields:
+  - {name: nextPageToken, note: Pass back as `pageToken` to fetch the next page.}
+  termination: A response with results but no `nextPageToken` is the last page.
+timezones:
+  param: zone
+  note: >-
+    Analytics endpoints accept a `zone` parameter (IANA name, e.g.
+    America/Los_Angeles) which is also encoded inside the opaque pageToken;
+    the docs carry a dedicated Timezones section.
+error_envelope:
+  shape: proprietary-json
+  rfc9457: false
+  content_type: application/json
+  properties:
+  - {name: error, type: string, description: The error name.}
+  - {name: message, type: string, description: The error details.}
+  - {name: code, type: number, description: The status code of the error.}
+  - {name: reference, type: string, description: Reference identifier for the failure, useful when contacting support.}
+  statuses_documented: [400, 401, 404, 422, 429, 500]
+  artifact: errors/friendbuy-problem-types.yml
+rate_limits:
+  published: false
+  headers: null
+  exhaustion_status: 429
+  note: >-
+    429 Too Many Requests appears in the response-code table of every documented
+    operation, so throttling exists, but Friendbuy publishes no numeric limit,
+    no window and no RateLimit-*/Retry-After header contract. See
+    rate-limits/friendbuy-rate-limits.yml.
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://mapi.fbot.me/v1
+  deprecation_policy: null
+  sunset_header: false
+  note: No version-negotiation header, no dated version train, no published deprecation or sunset policy.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id header is documented for API responses. The only correlation
+    identifier Friendbuy publishes is the webhook envelope `id` (and the error
+    envelope `reference`), both of which the docs describe as "useful for
+    troubleshooting".
+webhooks:
+  signature_header: X-Friendbuy-Hmac-SHA256
+  algorithm: base64(HMAC-SHA256(raw_body, merchant_secret))
+  batching: '`data` is an array; multiple events may arrive in one call.'
+  retry: every 15 minutes for up to 24 hours until a 200 is returned
+  timeout: 10 seconds
+  artifact: asyncapi/friendbuy-webhooks.yml
+path_style:
+  note: >-
+    The Merchant API is RPC-flavoured rather than resource-oriented for its write
+    surface — operations are addressed as verb paths (POST /postCustomer,
+    POST /postPurchaseEvent, GET /getCustomer, DELETE /deleteUserData) while the
+    read surface is resource-oriented (GET /analytics/*, /ledger-balance,
+    /reward/*). Agents must not assume REST resource conventions or HTTP-method
+    semantics from the path alone.
+privacy:
+  subject_access: GET /getUserData (CCPA/GDPR data request)
+  erasure: DELETE /deleteUserData (CCPA/GDPR deletion request)
+cross_links:
+  errors: errors/friendbuy-problem-types.yml
+  lifecycle: lifecycle/friendbuy-lifecycle.yml
+  authentication: authentication/friendbuy-authentication.yml
+  rate_limits: rate-limits/friendbuy-rate-limits.yml
+  webhooks: asyncapi/friendbuy-webhooks.yml
