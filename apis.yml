@@ -13,6 +13,18 @@ description: Friendbuy is a referral and loyalty marketing platform for ecommerc
   key/secret exchange at POST /authorization that returns a short-lived Bearer
   JWT. Access to the API and to production credentials is gated behind a paid,
   contact-sales plan.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
