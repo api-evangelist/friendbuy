@@ -1,13 +1,7 @@
 {
   "provider": "friendbuy",
   "sources": [
-    "friendbuy-analytics-api-openapi.yml",
-    "friendbuy-authorization-api-openapi.yml",
-    "friendbuy-customers-api-openapi.yml",
-    "friendbuy-events-api-openapi.yml",
-    "friendbuy-management-api-openapi.yml",
-    "friendbuy-referrals-api-openapi.yml",
-    "friendbuy-rewards-loyalty-api-openapi.yml"
+    "_original/friendbuy-openapi.yml"
   ],
   "outputs": [
     "friendbuy-analytics-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "friendbuy-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "friendbuy-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-authorization-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-referrals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "friendbuy-rewards-loyalty-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

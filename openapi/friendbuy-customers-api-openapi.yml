@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Friendbuy Merchant Analytics Customers API
-  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
-
-    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  title: Friendbuy Merchant Customers API
+  description: The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy's referral and loyalty marketing platform.
   version: '1.0'
   contact:
     name: Friendbuy
@@ -137,6 +135,21 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
+    Email:
+      name: email
+      in: query
+      required: false
+      description: The customer's email address.
+      schema:
+        type: string
   responses:
     ValidationError:
       description: The request payload failed validation.
@@ -156,32 +169,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    Email:
-      name: email
-      in: query
-      required: false
-      description: The customer's email address.
-      schema:
-        type: string
-    CustomerId:
-      name: customerId
-      in: query
-      required: false
-      description: Your identifier for the customer.
-      schema:
-        type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
     CustomerInput:
       type: object
       required:
@@ -198,6 +186,16 @@ components:
           type: string
         isNewCustomer:
           type: boolean
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
     Customer:
       allOf:
       - $ref: '#/components/schemas/CustomerInput'

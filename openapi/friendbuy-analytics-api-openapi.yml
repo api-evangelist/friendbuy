@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Friendbuy Merchant Analytics API
-  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
-
-    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  description: The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy's referral and loyalty marketing platform.
   version: '1.0'
   contact:
     name: Friendbuy
@@ -181,24 +179,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     AnalyticsPage:
       description: A page of analytics rows with an optional next-page token.
       content:
@@ -213,7 +194,21 @@ components:
                   additionalProperties: true
               nextPageToken:
                 type: string
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
+    FromDate:
+      name: fromDate
+      in: query
+      required: false
+      description: Start of the date range (inclusive), ISO 8601.
+      schema:
+        type: string
+        format: date
     ToDate:
       name: toDate
       in: query
@@ -229,14 +224,17 @@ components:
       description: Opaque token for the next page of results.
       schema:
         type: string
-    FromDate:
-      name: fromDate
-      in: query
-      required: false
-      description: Start of the date range (inclusive), ISO 8601.
-      schema:
-        type: string
-        format: date
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
   securitySchemes:
     bearerAuth:
       type: http

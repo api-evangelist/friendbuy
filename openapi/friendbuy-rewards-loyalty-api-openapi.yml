@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Friendbuy Merchant Analytics Rewards & Loyalty API
-  description: 'The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy''s referral and loyalty marketing platform. Merchants use it to sync customer records, generate personal referral links, track conversion events (purchases, sign-ups, and custom events), pull campaign analytics, and manage loyalty ledger balances and reward redemptions. The base URL is https://mapi.fbot.me/v1 (the fbot.me host is Friendbuy''s Merchant API origin). Authentication is a two-step flow: exchange an account key and secret at POST /authorization for a short-lived Bearer JWT, then send that token as `Authorization: Bearer <token>` on every subsequent request.
-
-    Endpoint paths in this document are grounded in Friendbuy''s public developer documentation at developers.friendbuy.com. Request and response schemas are honestly modeled from the documented behavior and common Friendbuy payload fields; exact field-level shapes should be reconciled against the live reference before production use.'
+  title: Friendbuy Merchant Rewards & Loyalty API
+  description: The Friendbuy Merchant API is the server-to-server REST interface for Friendbuy's referral and loyalty marketing platform.
   version: '1.0'
   contact:
     name: Friendbuy
@@ -205,6 +203,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
+    AnalyticsPage:
+      description: A page of analytics rows with an optional next-page token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+              nextPageToken:
+                type: string
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -223,31 +235,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    AnalyticsPage:
-      description: A page of analytics rows with an optional next-page token.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  type: object
-                  additionalProperties: true
-              nextPageToken:
-                type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
     RedeemRequest:
       type: object
       required:
@@ -271,6 +259,16 @@ components:
           description: Positive to credit, negative to debit.
         reason:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
     LedgerBalance:
       type: object
       properties:
