@@ -202,40 +202,26 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    AnalyticsPage:
-      description: A page of analytics rows with an optional next-page token.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  type: object
-                  additionalProperties: true
-              nextPageToken:
-                type: string
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    LedgerBalance:
+      type: object
+      properties:
+        customerId:
+          type: string
+        balance:
+          type: number
+        currency:
+          type: string
     RedeemRequest:
       type: object
       required:
@@ -259,38 +245,52 @@ components:
           description: Positive to credit, negative to debit.
         reason:
           type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-    LedgerBalance:
-      type: object
-      properties:
-        customerId:
-          type: string
-        balance:
-          type: number
-        currency:
-          type: string
+  responses:
+    AnalyticsPage:
+      description: A page of analytics rows with an optional next-page token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+              nextPageToken:
+                type: string
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    CustomerId:
-      name: customerId
-      in: query
-      required: false
-      description: Your identifier for the customer.
-      schema:
-        type: string
     PageToken:
       name: pageToken
       in: query
       required: false
       description: Opaque token for the next page of results.
+      schema:
+        type: string
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
       schema:
         type: string
   securitySchemes:

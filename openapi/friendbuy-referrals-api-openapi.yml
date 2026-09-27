@@ -105,6 +105,28 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    ReferralLink:
+      type: object
+      properties:
+        customerId:
+          type: string
+        campaignId:
+          type: string
+        link:
+          type: string
+          format: uri
+        referralCode:
+          type: string
     ReferralLinkRequest:
       type: object
       required:
@@ -121,37 +143,13 @@ components:
           type: string
         lastName:
           type: string
-    ReferralLink:
-      type: object
-      properties:
-        customerId:
-          type: string
-        campaignId:
-          type: string
-        link:
-          type: string
-          format: uri
-        referralCode:
-          type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-  parameters:
-    CustomerId:
-      name: customerId
-      in: query
-      required: false
-      description: Your identifier for the customer.
-      schema:
-        type: string
   responses:
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -164,12 +162,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
