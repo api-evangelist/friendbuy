@@ -146,6 +146,14 @@ components:
               type: string
             message:
               type: string
+    Customer:
+      allOf:
+      - $ref: '#/components/schemas/CustomerInput'
+      - type: object
+        properties:
+          createdOn:
+            type: string
+            format: date-time
     CustomerInput:
       type: object
       required:
@@ -162,21 +170,7 @@ components:
           type: string
         isNewCustomer:
           type: boolean
-    Customer:
-      allOf:
-      - $ref: '#/components/schemas/CustomerInput'
-      - type: object
-        properties:
-          createdOn:
-            type: string
-            format: date-time
   responses:
-    Unauthorized:
-      description: Missing or invalid Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -185,6 +179,12 @@ components:
             $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
       content:
         application/json:
           schema:

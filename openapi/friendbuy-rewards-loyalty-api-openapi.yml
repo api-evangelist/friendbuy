@@ -213,15 +213,6 @@ components:
               type: string
             message:
               type: string
-    LedgerBalance:
-      type: object
-      properties:
-        customerId:
-          type: string
-        balance:
-          type: number
-        currency:
-          type: string
     RedeemRequest:
       type: object
       required:
@@ -245,7 +236,28 @@ components:
           description: Positive to credit, negative to debit.
         reason:
           type: string
+    LedgerBalance:
+      type: object
+      properties:
+        customerId:
+          type: string
+        balance:
+          type: number
+        currency:
+          type: string
   responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     AnalyticsPage:
       description: A page of analytics rows with an optional next-page token.
       content:
@@ -266,31 +278,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
-    PageToken:
-      name: pageToken
-      in: query
-      required: false
-      description: Opaque token for the next page of results.
-      schema:
-        type: string
     CustomerId:
       name: customerId
       in: query
       required: false
       description: Your identifier for the customer.
+      schema:
+        type: string
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
       schema:
         type: string
   securitySchemes:

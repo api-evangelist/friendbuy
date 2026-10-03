@@ -121,6 +121,17 @@ components:
           type: boolean
         eventId:
           type: string
+    SignUpEvent:
+      type: object
+      required:
+      - email
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
     PurchaseEvent:
       type: object
       required:
@@ -144,17 +155,6 @@ components:
           items:
             type: object
             additionalProperties: true
-    SignUpEvent:
-      type: object
-      required:
-      - email
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        customer:
-          $ref: '#/components/schemas/CustomerInput'
     CustomerInput:
       type: object
       required:
@@ -172,14 +172,14 @@ components:
         isNewCustomer:
           type: boolean
   responses:
-    Unauthorized:
-      description: Missing or invalid Bearer token.
+    ValidationError:
+      description: The request payload failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
+    Unauthorized:
+      description: Missing or invalid Bearer token.
       content:
         application/json:
           schema:
