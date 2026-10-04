@@ -204,6 +204,9 @@ apis:
   - type: OpenCollection
     url: collections/friendbuy.opencollection.json
 common:
+- type: CapabilityMap
+  url: capabilities/friendbuy-capability-edges.yml
+  name: Friendbuy Business Capability Map
 - type: AgenticAccess
   url: agentic-access/friendbuy-agentic-access.yml
 - type: DomainSecurity
