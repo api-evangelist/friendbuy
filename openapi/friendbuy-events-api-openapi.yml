@@ -92,46 +92,6 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-    CustomEvent:
-      type: object
-      required:
-      - eventName
-      properties:
-        eventName:
-          type: string
-        customer:
-          $ref: '#/components/schemas/CustomerInput'
-        properties:
-          type: object
-          additionalProperties: true
-    EventResult:
-      type: object
-      properties:
-        received:
-          type: boolean
-        eventId:
-          type: string
-    SignUpEvent:
-      type: object
-      required:
-      - email
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        customer:
-          $ref: '#/components/schemas/CustomerInput'
     PurchaseEvent:
       type: object
       required:
@@ -155,6 +115,28 @@ components:
           items:
             type: object
             additionalProperties: true
+    CustomEvent:
+      type: object
+      required:
+      - eventName
+      properties:
+        eventName:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+        properties:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
     CustomerInput:
       type: object
       required:
@@ -171,15 +153,33 @@ components:
           type: string
         isNewCustomer:
           type: boolean
+    SignUpEvent:
+      type: object
+      required:
+      - email
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+    EventResult:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
   responses:
-    ValidationError:
-      description: The request payload failed validation.
+    Unauthorized:
+      description: Missing or invalid Bearer token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid Bearer token.
+    ValidationError:
+      description: The request payload failed validation.
       content:
         application/json:
           schema:

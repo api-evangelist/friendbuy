@@ -135,6 +135,40 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
+    Email:
+      name: email
+      in: query
+      required: false
+      description: The customer's email address.
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid Bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -170,40 +204,6 @@ components:
           type: string
         isNewCustomer:
           type: boolean
-  responses:
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid Bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    CustomerId:
-      name: customerId
-      in: query
-      required: false
-      description: Your identifier for the customer.
-      schema:
-        type: string
-    Email:
-      name: email
-      in: query
-      required: false
-      description: The customer's email address.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

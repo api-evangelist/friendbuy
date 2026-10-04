@@ -202,58 +202,30 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-    RedeemRequest:
-      type: object
-      required:
-      - customerId
-      - redemptionOptionId
-      properties:
-        customerId:
-          type: string
-        redemptionOptionId:
-          type: string
-    LedgerAdjustment:
-      type: object
-      required:
-      - customerId
-      - amount
-      properties:
-        customerId:
-          type: string
-        amount:
-          type: number
-          description: Positive to credit, negative to debit.
-        reason:
-          type: string
-    LedgerBalance:
-      type: object
-      properties:
-        customerId:
-          type: string
-        balance:
-          type: number
-        currency:
-          type: string
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      required: false
+      description: Your identifier for the customer.
+      schema:
+        type: string
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
   responses:
-    ValidationError:
-      description: The request payload failed validation.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing or invalid Bearer token.
       content:
         application/json:
           schema:
@@ -272,27 +244,55 @@ components:
                   additionalProperties: true
               nextPageToken:
                 type: string
-    Unauthorized:
-      description: Missing or invalid Bearer token.
+    ValidationError:
+      description: The request payload failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    CustomerId:
-      name: customerId
-      in: query
-      required: false
-      description: Your identifier for the customer.
-      schema:
-        type: string
-    PageToken:
-      name: pageToken
-      in: query
-      required: false
-      description: Opaque token for the next page of results.
-      schema:
-        type: string
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    LedgerAdjustment:
+      type: object
+      required:
+      - customerId
+      - amount
+      properties:
+        customerId:
+          type: string
+        amount:
+          type: number
+          description: Positive to credit, negative to debit.
+        reason:
+          type: string
+    RedeemRequest:
+      type: object
+      required:
+      - customerId
+      - redemptionOptionId
+      properties:
+        customerId:
+          type: string
+        redemptionOptionId:
+          type: string
+    LedgerBalance:
+      type: object
+      properties:
+        customerId:
+          type: string
+        balance:
+          type: number
+        currency:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http
