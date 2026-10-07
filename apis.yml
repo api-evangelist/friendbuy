@@ -204,6 +204,8 @@ apis:
   - type: OpenCollection
     url: collections/friendbuy.opencollection.json
 common:
+- type: Pricing
+  url: https://www.friendbuy.com/book-a-meeting
 - type: CapabilityMap
   url: capabilities/friendbuy-capability-edges.yml
   name: Friendbuy Business Capability Map
