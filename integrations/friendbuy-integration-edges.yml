@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/friendbuy/integrations
+- https://n8n.io/integrations/friendbuy/
+- https://composio.dev/toolkits/friendbuy
+- https://monid.ai/tools/friendbuy
+checked:
+- https://composio.dev/toolkits/friendbuy
+- https://monid.ai/tools/friendbuy
+- https://n8n.io/integrations/friendbuy/
+- https://zapier.com/apps/friendbuy/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
