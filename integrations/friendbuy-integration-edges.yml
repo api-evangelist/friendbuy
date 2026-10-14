@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/friendbuy/integrations
 - https://n8n.io/integrations/friendbuy/
@@ -7,10 +7,65 @@ source:
 - https://monid.ai/tools/friendbuy
 checked:
 - https://composio.dev/toolkits/friendbuy
+- https://docs.mparticle.com/integrations/friendbuy/event/
 - https://monid.ai/tools/friendbuy
 - https://n8n.io/integrations/friendbuy/
+- https://www.twilio.com/docs/segment/connections/destinations/catalog/actions-friendbuy
 - https://zapier.com/apps/friendbuy/integrations
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: Twilio Segment
+  partner: segment
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://www.twilio.com/docs/segment/connections/destinations/catalog/actions-friendbuy
+  coverage_role:
+  - destination
+  - source
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - actions-friendbuy
+      - actions-friendbuy-cloud
+      - friendbuy
+      status: PUBLIC
+      partner_owned: true
+      connection_modes:
+      - cloud:server
+      - cloud:web
+      accepted_methods:
+      - Alias
+      - Group
+      - Identify
+      - Page
+      - Track
+    source:
+      catalog_entries:
+      - friendbuy
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
+- partner_name: mParticle
+  partner: mparticle
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://docs.mparticle.com/integrations/friendbuy/event/
+  coverage_role:
+  - destination
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - friendbuy
+      integration_types:
+      - event
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
 templates: []
