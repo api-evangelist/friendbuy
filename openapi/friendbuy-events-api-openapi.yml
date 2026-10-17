@@ -115,28 +115,6 @@ components:
           items:
             type: object
             additionalProperties: true
-    CustomEvent:
-      type: object
-      required:
-      - eventName
-      properties:
-        eventName:
-          type: string
-        customer:
-          $ref: '#/components/schemas/CustomerInput'
-        properties:
-          type: object
-          additionalProperties: true
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
     CustomerInput:
       type: object
       required:
@@ -171,6 +149,28 @@ components:
           type: boolean
         eventId:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+    CustomEvent:
+      type: object
+      required:
+      - eventName
+      properties:
+        eventName:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInput'
+        properties:
+          type: object
+          additionalProperties: true
   responses:
     Unauthorized:
       description: Missing or invalid Bearer token.

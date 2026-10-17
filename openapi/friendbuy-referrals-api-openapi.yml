@@ -113,12 +113,6 @@ components:
       schema:
         type: string
   responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid Bearer token.
       content:
@@ -127,6 +121,12 @@ components:
             $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -144,16 +144,6 @@ components:
           format: uri
         referralCode:
           type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
     ReferralLinkRequest:
       type: object
       required:
@@ -170,6 +160,16 @@ components:
           type: string
         lastName:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
   securitySchemes:
     bearerAuth:
       type: http
