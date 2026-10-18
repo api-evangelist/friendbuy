@@ -76,5 +76,5 @@
     - connectors/applications/friendbuy
     vendor_link: https://www.friendbuy.com/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
