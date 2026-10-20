@@ -19,6 +19,41 @@ checked:
 summary: null
 marketplace_apps: []
 edges:
+- partner_name: Shopify (own)
+  partner: shopify
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://apps.shopify.com/friendbuy-lite
+  mirror_of: shopify/integrations/shopify-integration-edges.yml
+  apps:
+  - 'Friendbuy: Referrals & Loyalty'
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  publisher_verified:
+  - Built for Shopify
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/friendbuy
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - Friendbuy
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: affiliate_and_referrals
 - partner_name: Twilio Segment
   partner: segment
   partner_match: aggregator
@@ -72,41 +107,6 @@ edges:
       - event
   detected_by: sweep-cdp.py
   first_seen: '2026-10-14'
-- partner_name: Shopify (own)
-  partner: shopify
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://apps.shopify.com/friendbuy-lite
-  mirror_of: shopify/integrations/shopify-integration-edges.yml
-  apps:
-  - 'Friendbuy: Referrals & Loyalty'
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  publisher_verified:
-  - Built for Shopify
-- partner_name: Stripe (own)
-  partner: stripe
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.stripe.com/apps/friendbuy
-  mirror_of: stripe/integrations/stripe-integration-edges.yml
-  apps:
-  - Friendbuy
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: affiliate_and_referrals
 - partner_name: Fivetran
   partner: fivetran
   partner_match: aggregator
