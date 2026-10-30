@@ -1,4 +1,4 @@
-# Friendbuy (friendbuy)
+# Friendbuy
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,80 +64,164 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Friendbuy is a referral and loyalty marketing platform for ecommerce and direct-to-consumer brands. Merchants launch referral, loyalty, and reward campaigns through on-site widgets and a no-code dashboard, and integrate server-to-server through the **Friendbuy Merchant API** (base `https://mapi.fbot.me/v1`). The Merchant API lets merchants sync customer records, generate personal referral links, track purchase / sign-up / custom conversion events, pull campaign and reward analytics, and manage loyalty ledger balances, adjustments, redemptions, and coupons.
+Friendbuy is a referral and loyalty marketing platform for ecommerce and direct-to-consumer brands. Merchants launch referral, loyalty, and reward campaigns through on-site widgets and a no-code dashboard, and integrate server-to-server through the Friendbuy Merchant API (base https://mapi.fbot.me/v1). The Merchant API lets merchants sync customer records, generate personal referral links, track purchase / sign-up / custom conversion events, pull campaign and reward analytics, and manage loyalty ledger balances, adjustments, redemptions, and coupons. Authentication is a key/secret exchange at POST /authorization that returns a short-lived Bearer JWT. Access to the API and to production credentials is gated behind a paid, contact-sales plan.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/friendbuy/refs/heads/main/apis.yml)
+**Areas:** Referral Marketing · Loyalty · Rewards · E-Commerce · Marketing · Advocacy · Loyalty & Incentives
 
-## Access Model (Honest Note)
+## Friendbuy on APIs.io
 
-- **Documentation is public** at [developers.friendbuy.com](https://developers.friendbuy.com); anyone can read the Merchant API reference.
-- **The API itself is gated.** Friendbuy uses quote-based, contact-sales pricing (reported tiers ~ $249/mo Starter, ~ $749/mo Deluxe, custom Enterprise, keyed to monthly company sales volume). There is no self-serve sign-up that hands out API keys.
-- **Authentication is a two-step flow.** Exchange an account **key** and **secret** (issued from the Friendbuy Developer Center to paying accounts) at `POST /authorization` for a short-lived Bearer JWT, then send `Authorization: Bearer <token>` on every other call.
-- **No public WebSocket API.** Friendbuy's own API is request/response REST. Real-time client behavior comes from the browser `friendbuy.js` widget SDK firing tracking events, not from a WebSocket. See `review.yml`.
-- **Endpoint paths are confirmed** from the public docs; **request/response body schemas in `openapi/friendbuy-openapi.yml` are honestly modeled** from documented behavior and should be reconciled against the live reference before production use.
+Everything profiled for Friendbuy is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/friendbuy/](https://apis.io/providers/friendbuy/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (7)
 
-- Referral Marketing
-- Loyalty
-- Rewards
-- Ecommerce
-- Marketing
-- Advocacy
+- [Friendbuy Analytics API](https://apis.io/apis/friendbuy/friendbuy-analytics-api/) — Pull campaign, share, click, conversion, and reward analytics.
+- [Friendbuy Authorization API](https://apis.io/apis/friendbuy/friendbuy-authorization-api/) — Exchange account key and secret for a Bearer token.
+- [Friendbuy Customers API](https://apis.io/apis/friendbuy/friendbuy-customers-api/) — Create and retrieve customer records and manage customer data requests.
+- [Friendbuy Events API](https://apis.io/apis/friendbuy/friendbuy-events-api/) — Track purchase, sign-up, and custom conversion events.
+- [Friendbuy Management API](https://apis.io/apis/friendbuy/friendbuy-management-api/) — Block users from campaigns.
+- [Friendbuy Referrals API](https://apis.io/apis/friendbuy/friendbuy-referrals-api/) — Generate personal referral links and check referral status.
+- [Friendbuy Rewards & Loyalty API](https://apis.io/apis/friendbuy/friendbuy-rewards-loyalty-api/) — Manage loyalty ledger balances, adjustments, redemptions, and coupons.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-07-10
-- **Modified:** 2026-07-10
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Friendbuy Customers API
+Event-driven and webhook contracts.
 
-Create or update customer records synced from your store, retrieve a customer by id or email, look up loyalty member tier, and service GDPR/CCPA data-access and erasure requests via `getUserData` and `deleteUserData`.
+- [Friendbuy Webhooks](https://apis.io/asyncapis/friendbuy/friendbuy-webhooks/)
 
-- **Human URL:** [https://developers.friendbuy.com](https://developers.friendbuy.com)
-- **Base URL:** `https://mapi.fbot.me/v1`
+#### MCP servers (1)
 
-### Friendbuy Referrals API
+Model Context Protocol servers that expose the API to agents.
 
-Generate unique personal referral links and codes for advocate customers - singly or in batch - and check the status of referrals tied to a customer or referral code.
+- [friendbuy](https://apis.io/servers/friendbuy/friendbuy/)
 
-- **Human URL:** [https://developers.friendbuy.com](https://developers.friendbuy.com)
-- **Base URL:** `https://mapi.fbot.me/v1`
+#### Agentic access (1)
 
-### Friendbuy Events API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Track conversion events server-to-server - purchase/order events, account sign-ups, and arbitrary custom events - so Friendbuy can attribute them to referrals and trigger advocate and friend rewards.
+- [Friendbuy Agentic Access](https://apis.io/agentic-access/friendbuy/friendbuy-agentic-access/)
 
-- **Human URL:** [https://developers.friendbuy.com](https://developers.friendbuy.com)
-- **Base URL:** `https://mapi.fbot.me/v1`
+#### Collections (8)
 
-### Friendbuy Analytics API
+Postman and Open Collection request collections.
 
-Pull date-ranged, paginated campaign analytics - widget views, shares, clicks, account sign-ups, purchases, distributed advocate rewards and friend incentives, combined referral rewards, email captures, and email metrics.
+- [Friendbuy Merchant API](https://apis.io/collections/friendbuy/open-friendbuy/)
+- [Friendbuy Merchant Analytics API](https://apis.io/collections/friendbuy/open-friendbuy-analytics-api/)
+- [Friendbuy Merchant Analytics Authorization API](https://apis.io/collections/friendbuy/open-friendbuy-authorization-api/)
+- [Friendbuy Merchant Analytics Customers API](https://apis.io/collections/friendbuy/open-friendbuy-customers-api/)
+- [Friendbuy Merchant Analytics Events API](https://apis.io/collections/friendbuy/open-friendbuy-events-api/)
+- [Friendbuy Merchant Analytics Management API](https://apis.io/collections/friendbuy/open-friendbuy-management-api/)
+- [Friendbuy Merchant Analytics Referrals API](https://apis.io/collections/friendbuy/open-friendbuy-referrals-api/)
+- [Friendbuy Merchant Analytics Rewards & Loyalty API](https://apis.io/collections/friendbuy/open-friendbuy-rewards-loyalty-api/)
 
-- **Human URL:** [https://developers.friendbuy.com](https://developers.friendbuy.com)
-- **Base URL:** `https://mapi.fbot.me/v1`
+#### Overlays (7)
 
-### Friendbuy Rewards & Loyalty API
+OpenAPI overlays, including conversational phrasing for each operation.
 
-Manage the loyalty program - read individual and all-customer ledger balances, post point/credit adjustments (by customer id or custom identifier), list redemption options, redeem rewards, and list issued coupons.
+- [Friendbuy Analytics Overlay](https://apis.io/overlays/friendbuy/friendbuy-analytics-overlay/)
+- [Friendbuy Authorization Overlay](https://apis.io/overlays/friendbuy/friendbuy-authorization-overlay/)
+- [Friendbuy Customers Overlay](https://apis.io/overlays/friendbuy/friendbuy-customers-overlay/)
+- [Friendbuy Events Overlay](https://apis.io/overlays/friendbuy/friendbuy-events-overlay/)
+- [Friendbuy Management Overlay](https://apis.io/overlays/friendbuy/friendbuy-management-overlay/)
+- [Friendbuy Referrals Overlay](https://apis.io/overlays/friendbuy/friendbuy-referrals-overlay/)
+- [Friendbuy Rewards Loyalty Overlay](https://apis.io/overlays/friendbuy/friendbuy-rewards-loyalty-overlay/)
 
-- **Human URL:** [https://developers.friendbuy.com](https://developers.friendbuy.com)
-- **Base URL:** `https://mapi.fbot.me/v1`
+#### Security (2)
 
-## Common Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [LinkedIn](https://www.linkedin.com/company/friendbuy)
+- [Friendbuy Authentication](https://apis.io/security/friendbuy/friendbuy-authentication/)
+- [Friendbuy Domain Security](https://apis.io/security/friendbuy/friendbuy-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Friendbuy Plans Pricing](https://apis.io/plans/friendbuy/friendbuy-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Friendbuy Rate Limits](https://apis.io/rate-limits/friendbuy/friendbuy-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Friendbuy Finops](https://apis.io/finops/friendbuy/friendbuy-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://friendbuy.com)
 - [Documentation](https://developers.friendbuy.com)
-- [Plans](plans/friendbuy-plans-pricing.yml)
-- [Rate Limits](rate-limits/friendbuy-rate-limits.yml)
-- [Fin Ops](finops/friendbuy-finops.yml)
+- [Getting started](https://developers.friendbuy.com#integration-setup)
+- [API reference](https://developers.friendbuy.com)
+- [Pricing](https://www.friendbuy.com/book-a-meeting)
+- [Support](https://support.friendbuy.com)
+- [Changelog](https://www.friendbuy.com/product-updates)
 - [Blog](https://friendbuy.com/blog)
+- [Terms of service](https://friendbuy.com/terms-of-service)
+- [Privacy policy](https://friendbuy.com/privacy)
+- [GitHub](https://github.com/friendbuy)
+- [Status](https://friendbuy.statuspage.io)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 59.8** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 57.8 |
+| Contract governance | 4.5 |
+| Operational transparency | 73.7 |
+| Developer ergonomics | 55.4 |
+| Access clarity | 69.7 |
+
+**Agent readiness 30.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/friendbuy/](https://apis.io/providers/friendbuy/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Friendbuy: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/friendbuy/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
